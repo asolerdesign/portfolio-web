@@ -1,5 +1,8 @@
 /* Screens for the Alberto Soler portfolio. */
 
+import React from "react";
+import { I, HeroPhoto, Breadcrumbs, ContactForm } from "./components.jsx";
+
 const WORKS = [
 { id: "can-soler", name: "Can Soler", kind: "Ice Cream & Nougat, Alimentary", year: 2025,
   image: "assets/work/can-soler-card.jpg",
@@ -449,4 +452,4 @@ function ContactScreen() {
 
 }
 
-Object.assign(window, { WORKS, HomeScreen, WorkScreen, CaseStudy, AboutScreen, ContactScreen });
+export { WORKS, HomeScreen, WorkScreen, CaseStudy, AboutScreen, ContactScreen };

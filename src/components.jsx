@@ -1,6 +1,6 @@
 /* Alberto Soler — components. */
 
-const { useState, useEffect } = React;
+import React, { useState, useEffect } from "react";
 
 /* ---------------- icons (minimal) ----------------------------------- */
 const I = {
@@ -420,7 +420,7 @@ function Footer({ setScreen }) {
 
 }
 
-Object.assign(window, {
+export {
   I, TopNav, HeroPhoto, KitchenPhotoSVG, SectionHead, WorkRow,
   Manifesto, ContactForm, Footer, Breadcrumbs
-});
+};

@@ -10,45 +10,45 @@
    character: firm, balanced, no ornament. Local OTF files in /fonts.
    --------------------------------------------------------------------- */
 @font-face { font-family: "Halenoir"; font-weight: 100; font-style: normal; font-display: swap;
-  src: url("fonts/Halenoir-Thin.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-Thin.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 100; font-style: italic; font-display: swap;
-  src: url("fonts/Halenoir-ThinItalic.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-ThinItalic.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 200; font-style: normal; font-display: swap;
-  src: url("fonts/Halenoir-UltraLight.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-UltraLight.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 200; font-style: italic; font-display: swap;
-  src: url("fonts/Halenoir-UltraLightItalic.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-UltraLightItalic.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 250; font-style: normal; font-display: swap;
-  src: url("fonts/Halenoir-ExtraLight.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-ExtraLight.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 250; font-style: italic; font-display: swap;
-  src: url("fonts/Halenoir-ExtraLightItalic.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-ExtraLightItalic.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 300; font-style: normal; font-display: swap;
-  src: url("fonts/Halenoir-Light.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-Light.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 300; font-style: italic; font-display: swap;
-  src: url("fonts/Halenoir-LightItalic.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-LightItalic.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 400; font-style: normal; font-display: swap;
-  src: url("fonts/Halenoir-Regular.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-Regular.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 400; font-style: italic; font-display: swap;
-  src: url("fonts/Halenoir-RegularItalic.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-RegularItalic.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 500; font-style: normal; font-display: swap;
-  src: url("fonts/Halenoir-Medium.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-Medium.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 500; font-style: italic; font-display: swap;
-  src: url("fonts/Halenoir-MediumItalic.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-MediumItalic.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 600; font-style: normal; font-display: swap;
-  src: url("fonts/Halenoir-SemiBold.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-SemiBold.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 600; font-style: italic; font-display: swap;
-  src: url("fonts/Halenoir-SemiBoldItalic.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-SemiBoldItalic.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 700; font-style: normal; font-display: swap;
-  src: url("fonts/Halenoir-Bold.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-Bold.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 700; font-style: italic; font-display: swap;
-  src: url("fonts/Halenoir-BoldItalic.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-BoldItalic.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 800; font-style: normal; font-display: swap;
-  src: url("fonts/Halenoir-ExtraBold.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-ExtraBold.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 800; font-style: italic; font-display: swap;
-  src: url("fonts/Halenoir-ExtraBoldItalic.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-ExtraBoldItalic.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 900; font-style: normal; font-display: swap;
-  src: url("fonts/Halenoir-Black.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-Black.otf") format("opentype"); }
 @font-face { font-family: "Halenoir"; font-weight: 900; font-style: italic; font-display: swap;
-  src: url("fonts/Halenoir-BlackItalic.otf") format("opentype"); }
+  src: url("/fonts/Halenoir-BlackItalic.otf") format("opentype"); }
 
 :root {
   /* ---------- Palette — three values, that's the whole system --------- */

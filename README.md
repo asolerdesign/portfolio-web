@@ -1,25 +1,65 @@
-# CODING AGENTS: READ THIS FIRST
+# Alberto Soler — Portfolio
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+Graphic design & visual communication portfolio. Swiss/utilitarian, monochromatic,
+typographic. Single-page React app with an interactive WebGL "liquid" wallpaper
+background.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+Built with [Vite](https://vitejs.dev/) + React. Deploys as a fully static site.
 
-## What you should do — IMPORTANT
+## Local development
 
-**Read the chat transcripts first.** There are 1 chat transcript(s) in `chats/`. The transcripts show the full back-and-forth between the user and the design assistant — they tell you **what the user actually wants** and **where they landed** after iterating. Don't skip them. The final HTML files are the output, but the chat is where the intent lives.
+```bash
+npm install
+npm run dev      # http://localhost:5173
+```
 
-**Read `project/index.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+## Production build
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+```bash
+npm run build    # outputs static files to dist/
+npm run preview  # serve the built dist/ locally to verify
+```
 
-## About the design files
+## Project structure
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+```
+index.html                  Vite entry (mounts #root, loads /src/main.jsx)
+src/
+  main.jsx                  Entry — imports CSS, <image-slot>, wallpaper, app
+  app.jsx                   App shell, screen routing, Tweaks panel
+  screens.jsx               Home, Work, Case study, About, Contact + WORKS data
+  components.jsx            Nav, footer, icons, contact form, breadcrumbs
+  tweaks-panel.jsx          Live design tweaks (margins, grid, hero aspect)
+  image-slot.js             <image-slot> custom element (drag-and-drop images)
+  wallpaper-bg.js           WebGL liquid shader background (hidden ≤1024px)
+  colors_and_type.css       Halenoir font faces + design tokens
+  styles.css                Layout & component styles
+public/
+  fonts/                    Halenoir OTF files  (served at /fonts/…)
+  assets/                   Images & SVGs       (served at /assets/…)
+  image-slots.state.json    Persisted dropped images (read-only at runtime)
+  _redirects                SPA fallback for Cloudflare Pages
+```
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+### A note on images
 
-## Bundle contents
+`<image-slot>` lets you drag images into placeholders, persisted via
+`image-slots.state.json`. On the deployed static site this sidecar is **read-only**
+(there is no write bridge), so it restores any images that were already dropped but
+won't save new ones. Projects with a fixed `image:` field in `screens.jsx`
+(e.g. Can Soler) always render their image.
 
-- `README.md` — this file
-- `chats/` — conversation transcripts (read these!)
-- `project/` — the `ALBERTO SOLER PORTFOLIO WEB` project files (HTML prototypes, assets, components)
+## Deploy: GitHub → Cloudflare Pages
+
+1. Push this repo to GitHub.
+2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**,
+   and select the repo.
+3. Build settings:
+   - **Framework preset:** Vite
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+4. Deploy. Cloudflare runs the build and serves `dist/` at your `*.pages.dev` domain
+   (and any custom domain you attach).
+
+`base` is `/` and `public/_redirects` provides the SPA fallback, so no extra config
+is needed.

@@ -140,33 +140,42 @@ body.show-grid .grid-overlay { display: block; }
   margin: -4px;
 }
 @media (max-width: 720px) {
-  .nav-inner { padding-block: 20px 8px; }
+  .nav-inner { padding-block: 18px 14px; }
   .nav-links-wrap { display: none; }
   .nav-toggle-wrap { display: flex; }
   .nav-toggle { display: inline-block; }
+
+  /* Open menu = full-screen overlay so page content can't show through.
+     The wordmark + close (X) sit above the panel via z-index. */
   .nav.open .nav-links-wrap {
     display: flex;
-    position: absolute;
-    top: 100%; left: 0; right: 0;
+    position: fixed;
+    inset: 0;
     flex-direction: column;
+    justify-content: flex-start;
     gap: 0;
     background: var(--white);
-    border-top: 1px solid var(--gray);
-    padding: 8px var(--page-pad) 24px;
-    z-index: 30;
+    padding: 76px var(--page-pad) 32px;
+    z-index: 10;
     align-items: stretch;
+    overflow-y: auto;
   }
+  .nav.open .nav-wordmark-wrap,
+  .nav.open .nav-toggle-wrap { position: relative; z-index: 11; }
   .nav.open .nav-links {
     flex-direction: column;
     width: 100%;
     gap: 0;
   }
   .nav.open .nav-link {
-    font-size: 36px;
-    line-height: 1.2;
-    padding: 12px 0;
+    font-size: 34px;
+    line-height: 1;
+    padding: 18px 0;
     border-bottom: 1px solid var(--gray);
+    color: var(--black);
   }
+  .nav.open .nav-link.active { color: var(--gray-dark); }
+  .nav.open .nav-lang { margin-top: 22px; align-self: flex-start; font-size: 14px; }
 }
 
 /* =========================================================

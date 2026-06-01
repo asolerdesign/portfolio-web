@@ -1,6 +1,15 @@
 /* App shell + screen routing + Tweaks panel. */
 
-const { useState, useEffect } = React;
+import React, { useState, useEffect } from "react";
+import { createRoot } from "react-dom/client";
+import { TopNav, Footer } from "./components.jsx";
+import {
+  HomeScreen, WorkScreen, CaseStudy, AboutScreen, ContactScreen,
+} from "./screens.jsx";
+import {
+  useTweaks, TweaksPanel, TweakSection,
+  TweakSlider, TweakToggle, TweakRadio,
+} from "./tweaks-panel.jsx";
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "pagePad": 24,
@@ -121,4 +130,4 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+createRoot(document.getElementById("root")).render(<App />);
