@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Alberto Soler — Portfolio (Print)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="colors_and_type.css"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    /* Print-specific overrides — every screen stacked, no chrome, no carousel. */
+    :root {
+      --page-pad: 24px;
+      --grid-cols: 12;
+      --grid-gap: 24px;
+      --hero-aspect: 16 / 7;
+      --nav-link-size: 26px;
+      --wordmark-size: 16px;
+    }
+    body { background: var(--white); }
+
+    /* The Tweaks panel + grid overlay don't belong in print */
+    .twk-panel, .twk-toggle, .grid-overlay { display: none !important; }
+
+    /* Each screen wrapper */
+    .print-page {
+      break-after: page;
+      page-break-after: always;
+      padding-bottom: 24px;
+    }
+    .print-page:last-of-type { break-after: auto; page-break-after: auto; }
+    .print-page section,
+    .print-page > section { break-inside: avoid-page; }
+
+    /* Convert the Work carousel into a static 2-up grid for paper */
+    .work-carousel { padding-inline: var(--page-pad); }
+    .work-carousel .carousel-arrow { display: none; }
+    .work-track {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--grid-gap);
+      overflow: visible !important;
+      cursor: default !important;
+      scroll-snap-type: none;
+    }
+    .work-card { width: auto !important; cursor: default !important; }
+    .work-card-image { aspect-ratio: 4 / 5; }
+
+    /* Tighten section gaps for paper */
+    .section { padding: 48px 0 32px; }
+    .section-tight { padding-top: 16px; }
+    .footer { margin-top: 48px; padding: 56px 0 24px; }
+
+    /* Print rules */
+    @page { size: A4 portrait; margin: 0; }
+    @media print {
+      html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .nav { position: static !important; }
+      .work-carousel, .work-track { overflow: visible !important; }
+      /* Prevent breaking inside critical blocks */
+      .hero-photo, .work-card, .case-hero-img,
+      .about-portrait, .contact-form-box,
+      .hero-block, .case-block, .case-desc { break-inside: avoid; }
+      a { color: inherit; text-decoration: inherit; }
+      /* Disable animations */
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body data-screen-label="Alberto Soler Portfolio — Print">
+  <div id="root"></div>
+
+  <script src="image-slot.js"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <!-- Shared components & screens -->
+  <script type="text/babel" src="components.jsx"></script>
+  <script type="text/babel" src="screens.jsx"></script>
+
+  <!-- Print-specific app: every screen stacked, no routing -->
+  <script type="text/babel" data-presets="env,react">
+    const noop = () => {};
+
+    function PrintApp() {
+      return (
+        <>
+          {/* Top wordmark only — no nav links in print */}
+          <nav className="nav">
+            <div className="container nav-inner">
+              <div className="nav-wordmark-wrap">
+                <div className="nav-wordmark">ALBERTO&nbsp;SOLER</div>
+              </div>
+              <div className="nav-links-wrap" style={{justifyContent:"flex-end"}}>
+                <div style={{fontSize:11, letterSpacing:".2em", textTransform:"uppercase", fontWeight:500, color:"var(--gray-dark)"}}>
+                  Portfolio · 2026
+                </div>
+              </div>
+            </div>
+          </nav>
+
+          {/* HOME */}
+          <div className="print-page" data-screen-label="Home">
+            <HomeScreen setScreen={noop} />
+          </div>
+
+          {/* WORK */}
+          <div className="print-page" data-screen-label="Work">
+            <WorkScreen openCase={noop} />
+          </div>
+
+          {/* Each CASE STUDY */}
+          {WORKS.map((w) => (
+            <div className="print-page" data-screen-label={`Case — ${w.name}`} key={w.id}>
+              <CaseStudy caseId={w.id} setScreen={noop} openCase={noop} />
+            </div>
+          ))}
+
+          {/* ABOUT */}
+          <div className="print-page" data-screen-label="About">
+            <AboutScreen setScreen={noop} />
+          </div>
+
+          {/* CONTACT */}
+          <div className="print-page" data-screen-label="Contact">
+            <ContactScreen />
+          </div>
+
+          <Footer setScreen={noop} />
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<PrintApp />);
+
+    // Auto-print once fonts + JSX are ready
+    (async () => {
+      try { if (document.fonts && document.fonts.ready) { await document.fonts.ready; } } catch (e) {}
+      // give React a tick to commit + images to load
+      await new Promise(r => setTimeout(r, 800));
+      window.print();
+    })();
+  </script>
+</body>
+</html>

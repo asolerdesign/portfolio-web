@@ -1,0 +1,183 @@
+/* =========================================================================
+   ALBERTO SOLER — COLORS & TYPE
+   Brand and visual identity designer, Barcelona.
+   The system is monochromatic and typographic. Halenoir (Atipo Foundry)
+   is the only typeface. The grid does the heavy lifting.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------
+   Halenoir — the brand's only typeface. Geometric grotesque with
+   character: firm, balanced, no ornament. Local OTF files in /fonts.
+   --------------------------------------------------------------------- */
+@font-face { font-family: "Halenoir"; font-weight: 100; font-style: normal; font-display: swap;
+  src: url("fonts/Halenoir-Thin.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 100; font-style: italic; font-display: swap;
+  src: url("fonts/Halenoir-ThinItalic.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 200; font-style: normal; font-display: swap;
+  src: url("fonts/Halenoir-UltraLight.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 200; font-style: italic; font-display: swap;
+  src: url("fonts/Halenoir-UltraLightItalic.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 250; font-style: normal; font-display: swap;
+  src: url("fonts/Halenoir-ExtraLight.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 250; font-style: italic; font-display: swap;
+  src: url("fonts/Halenoir-ExtraLightItalic.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 300; font-style: normal; font-display: swap;
+  src: url("fonts/Halenoir-Light.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 300; font-style: italic; font-display: swap;
+  src: url("fonts/Halenoir-LightItalic.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("fonts/Halenoir-Regular.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 400; font-style: italic; font-display: swap;
+  src: url("fonts/Halenoir-RegularItalic.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 500; font-style: normal; font-display: swap;
+  src: url("fonts/Halenoir-Medium.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 500; font-style: italic; font-display: swap;
+  src: url("fonts/Halenoir-MediumItalic.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 600; font-style: normal; font-display: swap;
+  src: url("fonts/Halenoir-SemiBold.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 600; font-style: italic; font-display: swap;
+  src: url("fonts/Halenoir-SemiBoldItalic.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("fonts/Halenoir-Bold.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 700; font-style: italic; font-display: swap;
+  src: url("fonts/Halenoir-BoldItalic.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 800; font-style: normal; font-display: swap;
+  src: url("fonts/Halenoir-ExtraBold.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 800; font-style: italic; font-display: swap;
+  src: url("fonts/Halenoir-ExtraBoldItalic.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 900; font-style: normal; font-display: swap;
+  src: url("fonts/Halenoir-Black.otf") format("opentype"); }
+@font-face { font-family: "Halenoir"; font-weight: 900; font-style: italic; font-display: swap;
+  src: url("fonts/Halenoir-BlackItalic.otf") format("opentype"); }
+
+:root {
+  /* ---------- Palette — three values, that's the whole system --------- */
+  --white:  #ffffff;
+  --gray:   #cfcfcf;
+  --black:  #111111;
+
+  /* working aliases for readability */
+  --bg:        var(--white);
+  --rule:      var(--gray);   /* hairlines, dividers */
+  --fg-soft:   var(--gray);   /* placeholder, inactive nav, meta */
+  --fg:        var(--black);  /* everything else */
+
+  /* ---------- Type stacks --------------------------------------------- */
+  --font-sans:    "Halenoir", "Inter", system-ui, -apple-system, "Segoe UI",
+                  Helvetica, Arial, sans-serif;
+  --font-display: "Halenoir", "Inter", system-ui, sans-serif;
+
+  /* ---------- Type scale ---------------------------------------------- */
+  --fs-11: 0.6875rem;   /* 11 — micro labels  */
+  --fs-12: 0.75rem;     /* 12 — meta          */
+  --fs-13: 0.8125rem;   /* 13 — body sm       */
+  --fs-14: 0.875rem;    /* 14 — body          */
+  --fs-16: 1rem;        /* 16 — body lg       */
+  --fs-20: 1.25rem;     /* 20 — h4            */
+  --fs-24: 1.5rem;      /* 24 — nav, h3       */
+  --fs-32: 2rem;        /* 32 — h2            */
+  --fs-48: 3rem;        /* 48 — h1            */
+  --fs-72: 4.5rem;      /* 72 — display        */
+  --fs-120: 7.5rem;     /* 120 — hero wordmark */
+
+  /* ---------- Line-height --------------------------------------------- */
+  --lh-tight: 1.05;
+  --lh-snug:  1.18;
+  --lh-base:  1.5;
+  --lh-loose: 1.7;
+
+  /* ---------- Tracking ------------------------------------------------ */
+  --tr-display: -0.04em;
+  --tr-h:       -0.02em;
+  --tr-body:    0;
+  --tr-meta:    0.02em;
+  --tr-eyebrow: 0.18em;
+
+  /* ---------- Spacing (4px base) -------------------------------------- */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  24px;
+  --sp-6:  32px;
+  --sp-7:  48px;
+  --sp-8:  64px;
+  --sp-9:  96px;
+  --sp-10: 144px;
+
+  /* ---------- Radii --------------------------------------------------- */
+  --r-0: 0px;   /* default — sharp */
+
+  /* ---------- Rules / borders ----------------------------------------- */
+  --rule-thin: 1px solid var(--rule);
+  --rule-strong: 1px solid var(--black);
+}
+
+/* =========================================================================
+   SEMANTIC ELEMENT DEFAULTS
+   ========================================================================= */
+* { box-sizing: border-box; }
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  line-height: var(--lh-base);
+  letter-spacing: var(--tr-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  margin: 0;
+}
+
+h1, .h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-48);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-display);
+  font-weight: 700;
+  margin: 0;
+}
+h2, .h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-32);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tr-h);
+  font-weight: 700;
+  margin: 0;
+}
+h3, .h3 { font-size: var(--fs-24); line-height: var(--lh-snug); letter-spacing: var(--tr-h); font-weight: 700; margin: 0; }
+h4, .h4 { font-size: var(--fs-20); line-height: var(--lh-snug); font-weight: 700; margin: 0; }
+
+p, .body { font-size: var(--fs-14); line-height: var(--lh-base); margin: 0; text-wrap: pretty; }
+.body-lg { font-size: var(--fs-16); }
+.body-sm { font-size: var(--fs-13); }
+.meta {
+  font-size: var(--fs-12);
+  color: var(--fg-soft);
+  letter-spacing: var(--tr-meta);
+}
+.eyebrow {
+  font-size: var(--fs-11);
+  letter-spacing: var(--tr-eyebrow);
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.display {
+  font-size: var(--fs-72);
+  line-height: 0.95;
+  letter-spacing: var(--tr-display);
+  font-weight: 700;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+  transition: color 120ms, border-color 120ms;
+}
+a:hover { color: var(--fg-soft); border-bottom-color: var(--fg-soft); }
+
+hr { border: 0; border-top: var(--rule-thin); margin: var(--sp-6) 0; }

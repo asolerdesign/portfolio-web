@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
+  <rect width="800" height="1000" fill="#0d0d0d"></rect>
+  <g fill="none" stroke="#f4f4f0" stroke-width="3">
+    <rect x="220" y="320" width="360" height="360"></rect>
+  </g>
+  <g fill="#f4f4f0">
+    <rect x="260" y="360" width="240" height="40"></rect>
+    <rect x="260" y="480" width="160" height="40"></rect>
+    <rect x="260" y="600" width="240" height="40"></rect>
+  </g>
+  <text x="50%" y="780" text-anchor="middle" font-family="Halenoir, sans-serif" font-size="78" font-weight="700" letter-spacing="-2" fill="#f4f4f0">embudoox</text>
+  <text x="50%" y="830" text-anchor="middle" font-family="Halenoir, sans-serif" font-size="16" font-weight="500" letter-spacing="6" fill="#888">DIGITAL STUDIO · 2025</text>
+</svg>

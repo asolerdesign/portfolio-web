@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e2e2e2"></stop>
+      <stop offset="1" stop-color="#a8a8a8"></stop>
+    </linearGradient>
+    <radialGradient id="vig2" cx="50%" cy="40%" r="70%">
+      <stop offset="55%" stop-color="#000" stop-opacity="0"></stop>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.35"></stop>
+    </radialGradient>
+    <filter id="grain2"><feTurbulence baseFrequency="0.95" numOctaves="2" seed="3"></feTurbulence><feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.18 0"></feColorMatrix></filter>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg2)"></rect>
+  <path d="M 220 1000 L 220 560 C 220 440 320 360 400 360 C 480 360 580 440 580 560 L 580 1000 Z" fill="#1a1a1a"></path>
+  <rect x="378" y="320" width="44" height="60" fill="#9c918a"></rect>
+  <ellipse cx="400" cy="260" rx="80" ry="92" fill="#aa9f96"></ellipse>
+  <path d="M 320 220 C 320 168 480 162 480 222 L 480 244 C 470 210 330 210 320 244 Z" fill="#1f1c19"></path>
+  <circle cx="372" cy="270" r="14" fill="none" stroke="#1f1f1f" stroke-width="3.5"></circle>
+  <circle cx="428" cy="270" r="14" fill="none" stroke="#1f1f1f" stroke-width="3.5"></circle>
+  <line x1="386" y1="270" x2="414" y2="270" stroke="#1f1f1f" stroke-width="3.5"></line>
+  <line x1="400" y1="390" x2="400" y2="1000" stroke="#2c2c2c" stroke-width="3"></line>
+  <rect width="800" height="1000" fill="url(#vig2)"></rect>
+  <rect width="800" height="1000" fill="url(#grain2)" opacity="0.85"></rect>
+</svg>

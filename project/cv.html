@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Alberto Soler — Curriculum Vitae</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="colors_and_type.css"/>
+  <style>
+    /* A4 landscape — 297mm × 210mm */
+    :root {
+      --page-w: 297mm;
+      --page-h: 210mm;
+      --pad: 9mm;
+      --rule: 1px solid var(--gray);
+      --rule-strong: 1px solid var(--black);
+      --gray-dark: #6b6b6b;
+      --label-w: 36mm;
+
+      /* ── TWEAKABLE TOKENS ─────────────────────────────────── */
+      /* Spacing */
+      --tw-photo-gap: 7mm;         /* photo → title-wrap */
+      --tw-head-pb:   3mm;         /* below header, above first rule */
+      --tw-top-row-mb: 3mm;        /* ALBERTO/2026 → big title */
+      --tw-row-py:    2mm;         /* each row's vertical padding */
+      --tw-row-gap:   5mm;         /* row label → content */
+      --tw-stack-gap: 1.5mm;       /* between stack entries */
+      --tw-skills-gap: 8mm;        /* between skills columns */
+
+      /* Line spacing */
+      --tw-title-lh: 0.92;         /* big title line-height */
+      --tw-body-lh:  1.35;         /* body / lists line-height */
+
+      /* Colors — pick from palette (white #fff, gray #cfcfcf, gray-dark #6b6b6b, black #111) */
+      --tw-page-bg:    #ffffff;
+      --tw-text:       #111111;
+      --tw-soft:       #6b6b6b;
+      --tw-rule-color: #cfcfcf;
+    }
+
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: #e5e5e5;
+      color: var(--black);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    /* The page itself — fixed A4 landscape */
+    .page {
+      width: var(--page-w);
+      height: var(--page-h);
+      background: var(--tw-page-bg);
+      color: var(--tw-text);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+      padding: var(--pad);
+      box-sizing: border-box;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      row-gap: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── HEADER STRIP — photo (left) + title (right) ──────────── */
+    .cv-head {
+      display: grid;
+      grid-template-columns: 50mm 1fr;
+      column-gap: var(--tw-photo-gap);
+      align-items: end;
+      padding-bottom: var(--tw-head-pb);
+      border-bottom: 1px solid var(--tw-rule-color);
+    }
+    .cv-photo {
+      width: 50mm;
+      height: 50mm;
+      background: var(--gray);
+      position: relative;
+      overflow: hidden;
+      align-self: start;
+    }
+    .cv-photo image-slot {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+      position: absolute;
+      inset: 0;
+    }
+    /* Force any dropped portrait to clean grayscale — no grain, no color */
+    .cv-photo image-slot::part(image) {
+      filter: grayscale(1) contrast(1.02);
+    }
+    .cv-title-wrap {
+      align-self: end;
+      position: relative;
+      padding-bottom: 0;
+    }
+    .cv-availability {
+      position: absolute;
+      right: 0;
+      bottom: 1.8mm;
+      display: flex;
+      align-items: baseline;
+      gap: 2.5mm;
+    }
+    .cv-availability .dot {
+      width: 2mm;
+      height: 2mm;
+      border-radius: 50%;
+      background: var(--tw-text);
+      align-self: center;
+      flex: none;
+    }
+    .cv-availability .lab {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--tw-soft);
+    }
+    .cv-availability .val {
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--tw-text);
+    }
+    .cv-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: var(--tw-top-row-mb);
+    }
+    .cv-title-year {
+      font-size: 10pt;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--tw-text);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    .cv-name-small {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--tw-soft);
+      line-height: 1;
+      margin: 0;
+    }
+    .cv-title {
+      font-size: 48pt;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: var(--tw-title-lh);
+      margin: 0;
+      color: var(--tw-text);
+    }
+    .cv-title span.soft { color: var(--gray-dark); font-weight: 400; }
+
+    /* ── ROWS ────────────────────────────────────────────────── */
+    .cv-rows {
+      display: flex;
+      flex-direction: column;
+    }
+    .cv-row {
+      display: grid;
+      grid-template-columns: var(--label-w) 1fr;
+      column-gap: var(--tw-row-gap);
+      padding: var(--tw-row-py) 0;
+      border-bottom: 1px solid var(--tw-rule-color);
+      align-items: baseline;
+    }
+    .cv-row:last-child { border-bottom: 0; }
+    .cv-row-label {
+      font-size: 10pt;
+      font-weight: 500;
+      letter-spacing: 0;
+      color: var(--tw-text);
+      display: flex;
+      align-items: baseline;
+      gap: 4mm;
+      padding-top: 0;
+    }
+    .cv-row-num {
+      font-size: 10pt;
+      font-weight: 500;
+      color: var(--tw-text);
+      font-variant-numeric: tabular-nums;
+      min-width: 5mm;
+    }
+    .cv-row-sep {
+      color: var(--tw-rule-color);
+      font-weight: 300;
+      margin: 0 -2mm;
+    }
+
+    /* ── Row content variants ────────────────────────────────── */
+    .row-name { font-size: 13pt; font-weight: 500; letter-spacing: -0.005em; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 33mm 1fr;
+      row-gap: 0.5mm;
+      column-gap: 4mm;
+      font-size: 8.5pt;
+      line-height: var(--tw-body-lh);
+      color: var(--tw-text);
+    }
+    .contact-grid .k { color: var(--tw-soft); }
+    .contact-grid .v { color: var(--tw-text); }
+
+    .stack-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--tw-stack-gap);
+    }
+    .stack-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      column-gap: 6mm;
+      align-items: baseline;
+    }
+    .stack-item .ttl {
+      font-size: 9.5pt;
+      font-weight: 700;
+      line-height: 1.2;
+      text-decoration: none;
+      color: var(--tw-text);
+    }
+    .stack-item .sub {
+      font-size: 8.5pt;
+      color: var(--tw-soft);
+      margin-top: 0.3mm;
+      font-weight: 400;
+    }
+    .ttl-yr {
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-block;
+      margin-left: 2mm;
+      color: var(--tw-soft);
+      font-variant-numeric: tabular-nums;
+      font-size: 8.5pt;
+      letter-spacing: 0.02em;
+    }
+    .stack-item .yr {
+      font-size: 8pt;
+      font-weight: 500;
+      color: var(--tw-soft);
+      letter-spacing: 0.02em;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      white-space: nowrap;
+    }
+    .stack-item .yr-range {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0;
+    }
+
+    /* year-on-the-left variant (Education) */
+    .stack-item.yr-left {
+      grid-template-columns: 1fr;
+      column-gap: 0;
+      align-items: baseline;
+    }
+    .stack-item.yr-left .yr-lead {
+      font-size: 9.5pt;
+      font-weight: 500;
+      color: var(--tw-text);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+    }
+
+    .skills-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: var(--tw-skills-gap);
+      font-size: 8.5pt;
+      line-height: var(--tw-body-lh);
+    }
+    .skills-col h5 {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--tw-soft);
+      margin: 0 0 2mm;
+    }
+    .skills-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1mm 4mm;
+    }
+    .skills-col li {
+      position: relative;
+      padding-left: 0;
+      color: var(--tw-text);
+    }
+    .skills-col ul.lang-stack {
+      grid-template-columns: 1fr;
+    }
+    .skills-col ul.sw-grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, auto);
+      grid-auto-flow: column;
+    }
+    .skills-col li::before {
+      content: none;
+    }
+
+    .lang-row {
+      display: flex;
+      gap: 10mm;
+      font-size: 9pt;
+    }
+    .lang-row > div { display: flex; gap: 3mm; align-items: baseline; }
+    .lang-row .lvl { color: var(--gray-dark); font-size: 8pt; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* ── Tiny corner mark ──────────────────────────────────── */
+    .corner-mark {
+      position: absolute;
+      top: 6mm;
+      right: 6mm;
+      width: 5mm;
+      height: 5mm;
+      pointer-events: none;
+      color: var(--tw-soft);
+    }
+    .corner-mark svg { display: block; }
+
+    /* Print */
+    @page { size: A4 landscape; margin: 0; }
+    @media print {
+      body { background: var(--white); padding: 0; display: block; }
+      .page { box-shadow: none; }
+      html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body data-screen-label="Curriculum Vitae">
+
+  <article class="page" data-screen-label="CV">
+    <!-- ── HEADER ─────────────────────────────────────────────── -->
+    <header class="cv-head">
+      <div class="cv-photo">
+        <image-slot
+          id="cv-portrait"
+          src="assets/hero-portrait.jpg"
+          placeholder="Drop a portrait"
+          shape="rect"
+          fit="cover"
+        ></image-slot>
+      </div>
+
+      <div class="cv-title-wrap">
+        <div class="cv-top-row">
+          <div class="cv-name-small" style="letter-spacing: 0px; font-size: 24px">Alberto Soler</div>
+          <div class="cv-title-year" style="color: rgb(107, 107, 107)">2026</div>
+        </div>
+        <h1 class="cv-title" style="font-weight: 500; font-size: 48px; line-height: 1.15">Graphic Designer<br/>and Visual<br/>Communicator</h1>
+        <div class="cv-availability">
+          <span class="lab" style="letter-spacing: 0px; height: 14px">Availability</span>
+          <span class="val">Open to Work</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── ROWS ───────────────────────────────────────────────── -->
+    <section class="cv-rows">
+
+      <!-- 01 Contact -->
+      <div class="cv-row">
+        <div class="cv-row-label"><span class="cv-row-num">01</span><span class="cv-row-sep">|</span><span style="font-size: 16px">Contact</span></div>
+        <div class="contact-grid">
+          <span class="k">Location:</span><span class="v">Barcelona, ES</span>
+          <span class="k">Email:</span><span class="v">alberto.soleralemany@gmail.com</span>
+          <span class="k">Instagram:</span><span class="v">@icy.port</span>
+          <span class="k">Telephone:</span><span class="v">+34 663 00 45 38</span>
+          <span class="k">Portfolio:</span><span class="v">albertosoler.com</span>
+        </div>
+      </div>
+
+      <!-- 02 Education -->
+      <div class="cv-row">
+        <div class="cv-row-label"><span class="cv-row-num">02</span><span class="cv-row-sep">|</span><span style="font-size: 16px">Education</span></div>
+        <div class="stack-list">
+          <div class="stack-item yr-left">
+            <div>
+              <div class="ttl">Introduction to Graphic Design</div>
+              <div class="sub">EINA, UAB - Barcelona</div>
+            </div>
+          </div>
+          <div class="stack-item yr-left">
+            <div>
+              <div class="ttl">Bachelor Degree in Design and Digital Creations</div>
+              <div class="sub">TypeParis · Online</div>
+            </div>
+          </div>
+          <div class="stack-item yr-left">
+            <div>
+              <div class="ttl">Luxury Branding Strategy Course</div>
+              <div class="sub">César Val, Luxelling Academy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 Skills -->
+      <div class="cv-row">
+        <div class="cv-row-label"><span class="cv-row-num">03</span><span class="cv-row-sep">|</span><span style="font-size: 16px">Skills</span></div>
+        <div class="skills-row">
+          <div class="skills-col">
+            <h5 style="letter-spacing: 0px">Disciplines</h5>
+            <ul>
+              <li>Brand Strategy</li>
+              <li>Visual Identity</li>
+              <li>Creative Direction</li>
+              <li>Packaging</li>
+              <li>Editorial</li>
+              <li>Generative AI</li>
+            </ul>
+          </div>
+          <div class="skills-col">
+            <h5 style="letter-spacing: 0px">Software</h5>
+            <ul class="sw-grid">
+              <li>InDesign</li>
+              <li>Illustrator</li>
+              <li>Photoshop</li>
+              <li>Premiere</li>
+              <li>After Effects</li>
+              <li>Figma</li>
+              <li>Framer</li>
+              <li>FontForge</li>
+              <li>Claude Design</li>
+            </ul>
+          </div>
+          <div class="skills-col">
+            <h5 style="letter-spacing: 0px">Languages</h5>
+            <ul class="lang-stack">
+              <li>Catalan <span style="color:var(--gray-dark);font-size:7.5pt;letter-spacing:.05em;text-transform:uppercase">Native</span></li>
+              <li>Spanish <span style="color:var(--gray-dark);font-size:7.5pt;letter-spacing:.05em;text-transform:uppercase">Native</span></li>
+              <li>English <span style="color:var(--gray-dark);font-size:7.5pt;letter-spacing:.05em;text-transform:uppercase">C1</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 Experience -->
+      <div class="cv-row">
+        <div class="cv-row-label"><span class="cv-row-num">04</span><span class="cv-row-sep">|</span><span style="font-size: 16px">Experience</span></div>
+        <div class="stack-list">
+          <div class="stack-item">
+            <div>
+              <div class="ttl">Junior Freelance Designer <span class="ttl-yr">(2021–2024)</span></div>
+              <div class="sub">Can Soler, EMBUDOOX, Independent Creative Projects</div>
+            </div>
+          </div>
+          <div class="stack-item">
+            <div>
+              <div class="ttl">UI/UX Designer <span class="ttl-yr">(2024)</span></div>
+              <div class="sub">Factoría Creativa</div>
+            </div>
+          </div>
+          <div class="stack-item">
+            <div>
+              <div class="ttl">Brand Designer <span class="ttl-yr">(2025–Now)</span></div>
+              <div class="sub">Collaborator at Estudi Santamaria</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </article>
+
+  <script src="image-slot.js"></script>
+
+  <!-- ───── TWEAKS PANEL ─────────────────────────────────────────── -->
+  <div id="tweaks-root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="cv-tweaks.jsx"></script>
+</body>
+</html>

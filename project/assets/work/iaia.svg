@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="ia" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a3328"></stop>
+      <stop offset=".55" stop-color="#1d1812"></stop>
+      <stop offset="1" stop-color="#0a0806"></stop>
+    </linearGradient>
+    <filter id="iag"><feTurbulence baseFrequency=".9" numOctaves="2" seed="9"></feTurbulence><feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.18 0"></feColorMatrix></filter>
+  </defs>
+  <rect width="800" height="1000" fill="url(#ia)"></rect>
+  
+  <ellipse cx="400" cy="280" rx="200" ry="240" fill="#d9bba0" opacity=".95"></ellipse>
+  <path d="M 200 100 C 200 0 600 0 600 100 L 600 200 C 540 130 260 130 200 200 Z" fill="#0a0806"></path>
+  <ellipse cx="400" cy="320" rx="120" ry="32" fill="#7c5c45" opacity=".6"></ellipse>
+  
+  <path d="M 220 540 L 580 540 L 500 700 L 580 860 L 220 860 L 300 700 Z" fill="#e8d579"></path>
+  <text x="50%" y="730" text-anchor="middle" font-family="Halenoir, sans-serif" font-size="148" font-weight="900" letter-spacing="-4" fill="#1a1a1a">IAIA</text>
+  <rect width="800" height="1000" fill="url(#iag)" opacity=".7"></rect>
+</svg>

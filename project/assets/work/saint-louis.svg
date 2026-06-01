@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
+  <rect width="800" height="1000" fill="#cf1e2e"></rect>
+  
+  <path d="M 460 220 L 280 540 L 420 540 L 320 800 L 540 460 L 400 460 Z" fill="#ffffff"></path>
+  <text x="50%" y="920" text-anchor="middle" font-family="Halenoir, sans-serif" font-size="44" font-weight="700" letter-spacing="-1" fill="#ffffff">SAINT LOUIS</text>
+</svg>

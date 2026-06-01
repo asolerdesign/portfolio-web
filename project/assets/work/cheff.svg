@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
+  <rect width="800" height="1000" fill="#1f1f1f"></rect>
+  <text x="50%" y="46%" text-anchor="middle" font-family="Halenoir, sans-serif" font-size="180" font-weight="900" letter-spacing="-6" fill="#f4f4f0">CHEFF</text>
+  <line x1="180" y1="600" x2="620" y2="600" stroke="#f4f4f0" stroke-width="2"></line>
+  <text x="50%" y="660" text-anchor="middle" font-family="Halenoir, sans-serif" font-size="22" font-weight="500" letter-spacing="6" fill="#f4f4f0">CULINARY IDENTITY · 2025</text>
+  <g fill="#f4f4f0">
+    <circle cx="350" cy="780" r="6"></circle>
+    <circle cx="400" cy="780" r="6"></circle>
+    <circle cx="450" cy="780" r="6"></circle>
+  </g>
+</svg>
