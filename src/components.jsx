@@ -407,8 +407,7 @@ function Footer({ setScreen }) {
           <div className="footer-links">
             <a className="footer-mail" href="mailto:alberto.soleralemany@gmail.com">alberto.soleralemany@gmail.com</a>
             <a href="https://www.instagram.com/icy.port" target="_blank" rel="noreferrer">Instagram</a>
-            <a href="#" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href="#" target="_blank" rel="noreferrer">Behance</a>
+            <a href="https://linkedin.com/in/alberto-soler-alemany-22b45621b/" target="_blank" rel="noreferrer">LinkedIn</a>
           </div>
         </div>
         <div className="footer-bottom">
