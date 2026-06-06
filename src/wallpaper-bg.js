@@ -5,12 +5,13 @@
   const canvas = document.createElement('canvas');
   canvas.id = 'bg-gl';
   canvas.setAttribute('aria-hidden', 'true');
+  // display is governed by CSS (#bg-gl) so the responsive hide needs no
+  // !important to beat an inline style.
   Object.assign(canvas.style, {
     position: 'fixed',
     inset: '0',
     width: '100vw',
     height: '100vh',
-    display: 'block',
     zIndex: '-1',
     pointerEvents: 'none',
   });

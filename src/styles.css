@@ -3,7 +3,15 @@
    Tokens from colors_and_type.css. */
 
 html, body, #root { margin: 0; padding: 0; min-height: 100%; }
-body { background: var(--white); color: var(--black); font-family: var(--font-sans); }
+/* ----- page background -----
+   The liquid wallpaper is a fixed WebGL <canvas id="bg-gl"> at z-index:-1.
+   For it to show through, the body stays transparent and html carries the
+   flat fallback tone. These live in the bundled stylesheet (not an inline
+   <style>) so they're the single source of truth and never lose on source
+   order to colors_and_type.css's reset. */
+html { background: #f4f4f4; }
+body { background: transparent; color: var(--black); font-family: var(--font-sans); }
+#bg-gl { display: block; }
 
 img { max-width: 100%; display: block; }
 
@@ -26,7 +34,20 @@ img { max-width: 100%; display: block; }
   padding: 0 var(--page-pad);
   box-sizing: border-box;
 }
-@media (max-width: 1024px) { :root { --page-pad: 28px; } }
+@media (max-width: 1024px) {
+  :root { --page-pad: 28px; }
+  /* No wallpaper at tablet/phone: hide the canvas, use a flat background, and
+     drop the nav blur (nothing to frost, and the blur would otherwise trap
+     the fixed mobile-menu overlay as its containing block). The canvas no
+     longer sets display inline, so this needs no !important. */
+  #bg-gl { display: none; }
+  html, body { background: #f4f4f4; }
+  .nav {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
 @media (max-width: 640px)  { :root { --page-pad: 20px; } }
 
 /* ----- 12-col grid (applied to .container.grid or via class) ----- */
@@ -64,7 +85,10 @@ body.show-grid .grid-overlay { display: block; }
    ========================================================= */
 .nav {
   position: sticky; top: 0; z-index: 20;
-  background: var(--white);
+  /* Frosted over the moving wallpaper so the wordmark + links stay legible. */
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 .nav-inner {
   display: grid;
