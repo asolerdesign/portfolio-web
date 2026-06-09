@@ -43,13 +43,7 @@ const WORKS = [
   category: "Brandmark",
   typeOfProject: "Freelance",
   services: "Brandmark",
-  desc: "CMP Spain is the name of the Spanish National Pastry Team, which represented Spain at the 2026 European Championship and will soon compete in the World Championship. The brand identity is built around the abbreviation \"ESP\", derived from the country's name, creating a linear graphic form that evokes the traditional layered morphology of a pastry." },
-{ id: "playground-01", name: "Playground 01", kind: "Editorial", year: 2026,
-  section: "playground",
-  galleryCount: 4,
-  category: "Personal Work",
-  services: "Editorial Design\nType Exploration",
-  desc: "A personal piece — replace this entry with the real brief and description. Drop images onto the card and case slots to fill them." }];
+  desc: "CMP Spain is the name of the Spanish National Pastry Team, which represented Spain at the 2026 European Championship and will soon compete in the World Championship. The brand identity is built around the abbreviation \"ESP\", derived from the country's name, creating a linear graphic form that evokes the traditional layered morphology of a pastry." }];
 
 
 /* =====================================================================
@@ -293,8 +287,9 @@ function CaseStudy({ caseId, setScreen, openCase }) {
   const w = WORKS.find((x) => x.id === caseId) || WORKS[0];
   const idx = WORKS.findIndex((x) => x.id === caseId);
   const total = WORKS.length;
-  const prev = WORKS[(idx - 1 + total) % total];
-  const next = WORKS[(idx + 1) % total];
+  // Linear navigation (not circular): no prev on the first, no next on the last.
+  const prev = idx > 0 ? WORKS[idx - 1] : null;
+  const next = idx < total - 1 ? WORKS[idx + 1] : null;
 
   // Split services into a list for the Feature block
   const services = (w.services || "").split("\n").filter(Boolean);
@@ -357,12 +352,16 @@ function CaseStudy({ caseId, setScreen, openCase }) {
       <CaseGallery caseId={w.id} caseName={w.name} count={w.galleryCount || 4} />
 
       <div className="container case-nav">
-        <button className="case-nav-side" onClick={() => openCase(prev.id)}>
-          <span className="case-nav-name">← {prev.name}</span>
-        </button>
-        <button className="case-nav-side right" onClick={() => openCase(next.id)}>
-          <span className="case-nav-name">{next.name} →</span>
-        </button>
+        {prev ? (
+          <button className="case-nav-side" onClick={() => openCase(prev.id)}>
+            <span className="case-nav-name">← {prev.name}</span>
+          </button>
+        ) : null}
+        {next ? (
+          <button className="case-nav-side right" onClick={() => openCase(next.id)}>
+            <span className="case-nav-name">{next.name} →</span>
+          </button>
+        ) : null}
       </div>
     </section>);
 
