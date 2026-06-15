@@ -1071,6 +1071,24 @@ body.show-grid .grid-overlay { display: block; }
   color: var(--black);
   border-color: var(--black);
 }
+.btn.send-btn[disabled] {
+  opacity: 0.55;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* error banner — monochrome, matches the form's hairline language */
+.form-error {
+  border: 1px solid var(--black);
+  background: var(--white);
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--black);
+}
+.form-error b { font-weight: 700; }
 .attach-btn {
   font-family: var(--font-sans);
   font-size: 14px;

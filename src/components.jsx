@@ -302,8 +302,14 @@ function Manifesto() {
 }
 
 /* ---------------- Contact form -------------------------------------- */
+// Web3Forms access key. These keys are designed to live in client code —
+// they're tied to the destination inbox server-side, with spam protection.
+const WEB3FORMS_KEY = "77b57f5a-4891-4a7c-bde7-3fd9ba9a974c";
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+
 function ContactForm() {
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [errorMsg, setErrorMsg] = useState("");
   const [form, setForm] = useState({ name: "", email: "", brief: "" });
   const [files, setFiles] = useState([]);
   const fileInputRef = React.useRef(null);
@@ -322,18 +328,63 @@ function ContactForm() {
     return (bytes / 1024 / 1024).toFixed(1) + " MB";
   };
 
-  if (sent) {
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (status === "sending") return;
+    setStatus("sending");
+    setErrorMsg("");
+    try {
+      // multipart/form-data so any attached files ride along; works for
+      // text-only too. Don't set Content-Type — the browser adds the boundary.
+      const fd = new FormData();
+      fd.append("access_key", WEB3FORMS_KEY);
+      fd.append("subject", `New portfolio enquiry${form.name ? ` from ${form.name}` : ""}`);
+      fd.append("from_name", "Alberto Soler — Portfolio");
+      fd.append("name", form.name);
+      fd.append("email", form.email);
+      fd.append("replyto", form.email); // so replies go straight to the sender
+      fd.append("message", form.brief);
+      fd.append("botcheck", ""); // honeypot — empty means "not a bot"
+      files.forEach((f, i) => fd.append(`attachment_${i + 1}`, f, f.name));
+
+      const res = await fetch(WEB3FORMS_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: fd,
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success) {
+        setStatus("success");
+      } else {
+        setStatus("error");
+        setErrorMsg(data.message || "Something went wrong. Please try again, or email me directly.");
+      }
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg("Couldn't reach the server — check your connection, or email me directly.");
+    }
+  };
+
+  if (status === "success") {
     return (
       <div className="success">
-        <b>Got it{form.name ? `, ${form.name.split(" ")[0]}` : ""}.</b> I read everything
-        personally. I'll reply within two working days — either with a few
-        clarifying questions, or a first conversation slot.
+        <b>Got it{form.name ? `, ${form.name.split(" ")[0]}` : ""}.</b> Your message is on its
+        way. I read everything personally and reply within two working days — either with a
+        few clarifying questions, or a first conversation slot.
       </div>);
 
   }
 
+  const sending = status === "sending";
+
   return (
-    <form onSubmit={(e) => {e.preventDefault();setSent(true);}} className="contact-form-box">
+    <form onSubmit={onSubmit} className="contact-form-box">
+      {status === "error" ?
+      <div className="form-error" role="alert">
+          <b>Couldn't send your message.</b> {errorMsg}
+        </div> :
+      null}
+
       <div className="field">
         <label style={{ letterSpacing: "0px", fontSize: "14px" }}>Your name</label>
         <input type="text" value={form.name} onChange={set("name")}
@@ -357,16 +408,18 @@ function ContactForm() {
           multiple
           onChange={onPickFiles}
           style={{ display: "none" }} />
-        
+
         <div className="form-actions">
           <button
             type="button"
             className="attach-btn"
             onClick={() => fileInputRef.current && fileInputRef.current.click()}>
-            
+
             <I.Paperclip /> Attach files
           </button>
-          <button type="submit" className="btn send-btn">Send <I.ArrowRight /></button>
+          <button type="submit" className="btn send-btn" disabled={sending}>
+            {sending ? "Sending…" : <>Send <I.ArrowRight /></>}
+          </button>
         </div>
         {files.length > 0 ?
         <ul className="attach-list">
