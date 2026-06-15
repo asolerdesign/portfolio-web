@@ -36,17 +36,11 @@ img { max-width: 100%; display: block; }
 }
 @media (max-width: 1024px) {
   :root { --page-pad: 28px; }
-  /* No wallpaper at tablet/phone: hide the canvas, use a flat background, and
-     drop the nav blur (nothing to frost, and the blur would otherwise trap
-     the fixed mobile-menu overlay as its containing block). The canvas no
-     longer sets display inline, so this needs no !important. */
+  /* No wallpaper at tablet/phone — flat background. The nav frost is added
+     only at >=1025px (see below), so backdrop-filter never exists here and
+     can't turn .nav into a containing block for the fixed menu overlay. */
   #bg-gl { display: none; }
   html, body { background: #f4f4f4; }
-  .nav {
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
 }
 @media (max-width: 640px)  { :root { --page-pad: 20px; } }
 
@@ -85,10 +79,20 @@ body.show-grid .grid-overlay { display: block; }
    ========================================================= */
 .nav {
   position: sticky; top: 0; z-index: 20;
-  /* Frosted over the moving wallpaper so the wordmark + links stay legible. */
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* Near-opaque default for tablet/phone (no wallpaper behind it there). */
+  background: rgba(255, 255, 255, 0.92);
+}
+/* Desktop only: frost over the moving wallpaper so the wordmark + links stay
+   legible. Gated by min-width so the backdrop-filter NEVER exists at <=1024px
+   — otherwise it makes .nav a containing block for the fixed mobile-menu
+   overlay, capping it to the nav's height instead of the viewport and trapping
+   it behind page content. */
+@media (min-width: 1025px) {
+  .nav {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
 }
 .nav-inner {
   display: grid;
