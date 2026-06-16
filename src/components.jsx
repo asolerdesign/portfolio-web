@@ -1,6 +1,7 @@
 /* Alberto Soler — components. */
 
 import React, { useState, useEffect } from "react";
+import { useLang } from "./i18n.jsx";
 
 /* ---------------- icons (minimal) ----------------------------------- */
 const I = {
@@ -57,6 +58,7 @@ const I = {
 /* ---------------- Top nav ------------------------------------------- */
 function TopNav({ screen, setScreen }) {
   const [open, setOpen] = useState(false);
+  const { lang, setLang, t } = useLang();
   const link = (k, label) =>
   <span
     className={`nav-link ${screen === k ? "active" : ""}`}
@@ -73,15 +75,16 @@ function TopNav({ screen, setScreen }) {
         </div>
         <div className="nav-links-wrap">
           <div className="nav-links">
-            {link("work", "Work")}
-            {link("about", "About")}
-            {link("contact", "Contact")}
+            {link("work", t("NAV.work"))}
+            {link("about", t("NAV.about"))}
+            {link("contact", t("NAV.contact"))}
           </div>
-          <button className="nav-lang" type="button" aria-label="Switch language">
+          <button className="nav-lang" type="button" aria-label={t("A11Y.lang")}
+            onClick={() => setLang(lang === "en" ? "es" : "en")}>
             <span className="lang-paren">(</span>
-            <span className="lang-on">ENG</span>
+            <span className={lang === "en" ? "lang-on" : "lang-off"}>ENG</span>
             <span className="lang-sep">/</span>
-            <span className="lang-off">ESP</span>
+            <span className={lang === "es" ? "lang-on" : "lang-off"}>ESP</span>
             <span className="lang-paren">)</span>
           </button>
         </div>
@@ -89,7 +92,7 @@ function TopNav({ screen, setScreen }) {
           <button
             className="nav-toggle"
             onClick={() => setOpen(!open)}
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={open ? t("A11Y.menu_close") : t("A11Y.menu_open")}
             aria-expanded={open}
           >
             {open ? <I.Close /> : <I.Menu />}
@@ -228,21 +231,25 @@ function KitchenPhotoSVG() {
 
 /* ---------------- Breadcrumbs — interactive directory route -------- */
 function Breadcrumbs({ path, setScreen }) {
+  const { t } = useLang();
   const navMap = { home: "home", work: "work", about: "about", contact: "contact" };
   return (
-    <nav className="breadcrumbs" aria-label="Directory route">
+    <nav className="breadcrumbs" aria-label={t("A11Y.breadcrumb")}>
       <span className="breadcrumbs-slash">/</span>
       {path.map((seg, i) => {
         const target = navMap[seg.toLowerCase()];
         const last = i === path.length - 1;
+        const bk = "BC." + seg.toLowerCase();
+        const tl = t(bk);
+        const label = tl === bk ? seg : tl; // fall back to the raw segment
         const node = target && !last ?
         <button
           type="button"
           className="breadcrumbs-seg link"
           onClick={() => setScreen(target)}>
-          {seg}</button> :
+          {label}</button> :
 
-        <span className={`breadcrumbs-seg ${last ? "current" : ""}`}>{seg}</span>;
+        <span className={`breadcrumbs-seg ${last ? "current" : ""}`}>{label}</span>;
 
         return (
           <React.Fragment key={i}>
@@ -314,6 +321,7 @@ function ContactForm() {
   const [files, setFiles] = useState([]);
   const fileInputRef = React.useRef(null);
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+  const { t } = useLang();
 
   const onPickFiles = (e) => {
     const picked = Array.from(e.target.files || []);
@@ -338,7 +346,7 @@ function ContactForm() {
       // text-only too. Don't set Content-Type — the browser adds the boundary.
       const fd = new FormData();
       fd.append("access_key", WEB3FORMS_KEY);
-      fd.append("subject", `New portfolio enquiry${form.name ? ` from ${form.name}` : ""}`);
+      fd.append("subject", t("MAIL.subject", { name: form.name }).trim());
       fd.append("from_name", "Alberto Soler — Portfolio");
       fd.append("name", form.name);
       fd.append("email", form.email);
@@ -357,20 +365,18 @@ function ContactForm() {
         setStatus("success");
       } else {
         setStatus("error");
-        setErrorMsg(data.message || "Something went wrong. Please try again, or email me directly.");
+        setErrorMsg(data.message || t("FORM.error_api"));
       }
     } catch (err) {
       setStatus("error");
-      setErrorMsg("Couldn't reach the server — check your connection, or email me directly.");
+      setErrorMsg(t("FORM.error_network"));
     }
   };
 
   if (status === "success") {
     return (
       <div className="success">
-        <b>Got it{form.name ? `, ${form.name.split(" ")[0]}` : ""}.</b> Your message is on its
-        way. I read everything personally and reply within two working days — either with a
-        few clarifying questions, or a first conversation slot.
+        <b>{t("FORM.success_word")}{form.name ? `, ${form.name.split(" ")[0]}` : ""}.</b> {t("FORM.success_body")}
       </div>);
 
   }
@@ -381,24 +387,24 @@ function ContactForm() {
     <form onSubmit={onSubmit} className="contact-form-box">
       {status === "error" ?
       <div className="form-error" role="alert">
-          <b>Couldn't send your message.</b> {errorMsg}
+          <b>{t("FORM.error_title")}</b> {errorMsg}
         </div> :
       null}
 
       <div className="field">
-        <label style={{ letterSpacing: "0px", fontSize: "14px" }}>Your name</label>
+        <label style={{ letterSpacing: "0px", fontSize: "14px" }}>{t("FORM.label_name")}</label>
         <input type="text" value={form.name} onChange={set("name")}
-        placeholder="David García" required />
+        placeholder={t("FORM.ph_name")} required />
       </div>
       <div className="field">
-        <label style={{ letterSpacing: "0px", fontSize: "14px" }}>Email</label>
+        <label style={{ letterSpacing: "0px", fontSize: "14px" }}>{t("FORM.label_email")}</label>
         <input type="email" value={form.email} onChange={set("email")}
-        placeholder="hello@example.com" required />
+        placeholder={t("FORM.ph_email")} required />
       </div>
       <div className="field">
-        <label style={{ letterSpacing: "0px", fontSize: "14px" }}>Tell me about your project</label>
+        <label style={{ letterSpacing: "0px", fontSize: "14px" }}>{t("FORM.label_message")}</label>
         <textarea rows="4" value={form.brief} onChange={set("brief")}
-        placeholder="A few sentences — what you do, what you need, when you need it." required></textarea>
+        placeholder={t("FORM.ph_message")} required></textarea>
       </div>
 
       <div className="field field-attach">
@@ -415,10 +421,10 @@ function ContactForm() {
             className="attach-btn"
             onClick={() => fileInputRef.current && fileInputRef.current.click()}>
 
-            <I.Paperclip /> Attach files
+            <I.Paperclip /> {t("FORM.attach")}
           </button>
           <button type="submit" className="btn send-btn" disabled={sending}>
-            {sending ? "Sending…" : <>Send <I.ArrowRight /></>}
+            {sending ? t("FORM.sending") : <>{t("FORM.send")} <I.ArrowRight /></>}
           </button>
         </div>
         {files.length > 0 ?
@@ -430,7 +436,7 @@ function ContactForm() {
                 <button
               type="button"
               className="attach-remove"
-              aria-label={`Remove ${f.name}`}
+              aria-label={t("A11Y.remove_file", { file: f.name })}
               onClick={() => removeFile(i)}>
               ×</button>
               </li>
@@ -444,18 +450,19 @@ function ContactForm() {
 
 /* ---------------- Footer -------------------------------------------- */
 function Footer({ setScreen }) {
+  const { t } = useLang();
   return (
     <footer className="footer">
       <div className="container">
         <div className="footer-grid">
           <div>
-            <div className="footer-wm" style={{ fontSize: "75px", lineHeight: "0.9" }}>Let's talk.</div>
+            <div className="footer-wm" style={{ fontSize: "75px", lineHeight: "0.9" }}>{t("FOOTER.cta")}</div>
           </div>
           <div className="footer-links footer-links-pages">
-            <a onClick={() => setScreen("home")}>home</a>
-            <a onClick={() => setScreen("work")}>work</a>
-            <a onClick={() => setScreen("about")}>about</a>
-            <a onClick={() => setScreen("contact")}>contact</a>
+            <a onClick={() => setScreen("home")}>{t("FOOTER.home")}</a>
+            <a onClick={() => setScreen("work")}>{t("FOOTER.work")}</a>
+            <a onClick={() => setScreen("about")}>{t("FOOTER.about")}</a>
+            <a onClick={() => setScreen("contact")}>{t("FOOTER.contact")}</a>
           </div>
           <div className="footer-links">
             <a className="footer-mail" href="mailto:alberto.soleralemany@gmail.com">alberto.soleralemany@gmail.com</a>
@@ -464,8 +471,8 @@ function Footer({ setScreen }) {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2026 Alberto Soler · Montgat, Barcelona</span>
-          <span>EN&nbsp;·&nbsp;ES</span>
+          <span>{t("FOOTER.copyright")}</span>
+          <span>{t("FOOTER.lang_note")}</span>
         </div>
       </div>
     </footer>);

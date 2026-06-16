@@ -10,6 +10,7 @@ import {
   useTweaks, TweaksPanel, TweakSection,
   TweakSlider, TweakToggle, TweakRadio,
 } from "./tweaks-panel.jsx";
+import { LangProvider } from "./i18n.jsx";
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "pagePad": 24,
@@ -65,7 +66,7 @@ function App() {
   }
 
   return (
-    <>
+    <LangProvider>
       <TopNav screen={screen === "case" ? "work" : screen} setScreen={setScreen} />
       <div data-screen-label={screen[0].toUpperCase() + screen.slice(1)}>
         {body}
@@ -126,7 +127,7 @@ function App() {
           />
         </TweakSection>
       </TweaksPanel>
-    </>
+    </LangProvider>
   );
 }
 

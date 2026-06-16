@@ -2,6 +2,7 @@
 
 import React from "react";
 import { I, HeroPhoto, Breadcrumbs, ContactForm } from "./components.jsx";
+import { useLang } from "./i18n.jsx";
 
 const WORKS = [
 { id: "can-soler", name: "Can Soler", kind: "Ice Cream & Nougat, Alimentary", year: 2025,
@@ -50,25 +51,30 @@ const WORKS = [
    HOME — matches the reference image
    ===================================================================== */
 function HomeScreen({ setScreen }) {
+  const { t } = useLang();
   return (
     <>
       <div className="container">
-        <HeroPhoto slotId="home-hero" placeholderLabel="Drag your portrait here" />
+        <HeroPhoto slotId="home-hero" placeholderLabel={t("IMG.hero")} />
       </div>
 
       <section className="container">
         <div className="hero-block">
           <div className="hero-title-wrap">
-            <h1 className="hero-title">Graphic Design<br />&amp; Visual Communication</h1>
+            <h1 className="hero-title">
+              {t("HOME.title").split("\n").map((ln, i) =>
+                <React.Fragment key={i}>{i > 0 ? <br /> : null}{ln}</React.Fragment>
+              )}
+            </h1>
           </div>
 
           <div className="hero-meta-wrap">
             <div className="meta-table">
-              <div className="row single"><span className="v" style={{ fontWeight: "700" }}>Based in Barcelona.</span></div>
-              <div className="row single"><span className="v" style={{ fontWeight: "500" }}>Working across visual identity,{"\n"}art direction and digital experiences.</span></div>
+              <div className="row single"><span className="v" style={{ fontWeight: "700" }}>{t("HOME.based")}</span></div>
+              <div className="row single"><span className="v" style={{ fontWeight: "500" }}>{t("HOME.intro")}</span></div>
               <div className="row">
-                <span className="k" style={{ fontWeight: "400" }}>Disciplines,{"\n"}open for commissions,{"\n"}2026.</span>
-                <span className="v">Brand Strategy{"\n"}Visual Identity{"\n"}Art direction{"\n"}Packaging{"\n"}Creative AI</span>
+                <span className="k" style={{ fontWeight: "400" }}>{t("HOME.meta_label")}</span>
+                <span className="v">{t("HOME.disciplines")}</span>
               </div>
             </div>
           </div>
@@ -85,6 +91,7 @@ function HomeScreen({ setScreen }) {
    sections (Visual Identity, Creative Playground, …) can share the same
    chrome and behaviour. */
 function WorkCarousel({ title, items, openCase }) {
+  const { t } = useLang();
   const trackRef = React.useRef(null);
   const draggedRef = React.useRef(false);
 
@@ -149,7 +156,7 @@ function WorkCarousel({ title, items, openCase }) {
                 <image-slot
                 id={`work-${w.id}`}
                 src={w.image || ""}
-                placeholder={`Drop ${w.name} cover`}
+                placeholder={t("IMG.work_card", { name: w.name })}
                 shape="rect"
                 fit="cover">
               </image-slot>
@@ -167,14 +174,14 @@ function WorkCarousel({ title, items, openCase }) {
         <button
           className="carousel-arrow"
           onClick={() => scrollByCard(-1)}
-          aria-label="Previous projects">
-          
+          aria-label={t("A11Y.prev_proj")}>
+
           <I.ArrowLeftLg />
         </button>
         <button
           className="carousel-arrow"
           onClick={() => scrollByCard(1)}
-          aria-label="Next projects">
+          aria-label={t("A11Y.next_proj")}>
           
           <I.ArrowRightLg />
         </button>
@@ -184,6 +191,7 @@ function WorkCarousel({ title, items, openCase }) {
 }
 
 function WorkScreen({ openCase, setScreen }) {
+  const { t } = useLang();
   const identityProjects = WORKS.filter((w) => (w.section || "identity") === "identity");
 
   return (
@@ -192,7 +200,7 @@ function WorkScreen({ openCase, setScreen }) {
         <Breadcrumbs path={["home", "work"]} setScreen={setScreen} />
       </div>
 
-      <WorkCarousel title="Visual Identity" items={identityProjects} openCase={openCase} />
+      <WorkCarousel title={t("WORK.section_title")} items={identityProjects} openCase={openCase} />
     </section>);
 
 }
@@ -205,6 +213,7 @@ function WorkScreen({ openCase, setScreen }) {
    configurable per-project via `count` so projects with fewer assets can show
    a shorter carousel. */
 function CaseGallery({ caseId, caseName, count }) {
+  const { t } = useLang();
   const trackRef = React.useRef(null);
 
   const scrollByCard = (dir) => {
@@ -253,7 +262,7 @@ function CaseGallery({ caseId, caseName, count }) {
               <div className="case-gallery-card" key={n}>
                 <image-slot
                   id={`case-${caseId}-${n}`}
-                  placeholder={`${caseName} · image ${String(n).padStart(2, "0")}`}
+                  placeholder={t("IMG.gallery", { name: caseName, n: String(n).padStart(2, "0") })}
                   shape="rect"
                   fit="cover">
                 </image-slot>
@@ -267,14 +276,14 @@ function CaseGallery({ caseId, caseName, count }) {
         <button
           className="carousel-arrow"
           onClick={() => scrollByCard(-1)}
-          aria-label="Previous image">
-          
+          aria-label={t("A11Y.prev_img")}>
+
           <I.ArrowLeftLg />
         </button>
         <button
           className="carousel-arrow"
           onClick={() => scrollByCard(1)}
-          aria-label="Next image">
+          aria-label={t("A11Y.next_img")}>
           
           <I.ArrowRightLg />
         </button>
@@ -284,6 +293,7 @@ function CaseGallery({ caseId, caseName, count }) {
 }
 
 function CaseStudy({ caseId, setScreen, openCase }) {
+  const { t, tp } = useLang();
   const w = WORKS.find((x) => x.id === caseId) || WORKS[0];
   const idx = WORKS.findIndex((x) => x.id === caseId);
   const total = WORKS.length;
@@ -291,15 +301,15 @@ function CaseStudy({ caseId, setScreen, openCase }) {
   const prev = idx > 0 ? WORKS[idx - 1] : null;
   const next = idx < total - 1 ? WORKS[idx + 1] : null;
 
-  // Split services into a list for the Feature block
-  const services = (w.services || "").split("\n").filter(Boolean);
+  // Split services into a list for the Feature block (localized)
+  const services = (tp(w, "services") || "").split("\n").filter(Boolean);
 
   return (
     <section className="case-study">
       <div className="container case-back">
         <button className="btn" onClick={() => setScreen("work")}>
           <I.ArrowLeftLg style={{ width: 16, height: 16 }} />
-          All work
+          {t("CASE.back")}
         </button>
         <div className="case-back-count">
           ({String(idx + 1).padStart(2, "0")}) <span style={{ color: "var(--gray)" }}>/ {String(total).padStart(2, "0")}</span>
@@ -315,20 +325,20 @@ function CaseStudy({ caseId, setScreen, openCase }) {
             ) :
             w.name}
           </h1>
-          {(w.desc || "").split("\n\n").map((para, i) =>
+          {(tp(w, "desc") || "").split("\n\n").map((para, i) =>
           <p className="case-lede" key={i}>{para}</p>
           )}
 
           <div className="case-section case-details-block">
-            <div className="case-section-head">Details</div>
-            <div className="case-details-row"><span className="k">Category</span><span className="v">{w.category}</span></div>
-            <div className="case-details-row"><span className="k">Year</span><span className="v">{w.year}</span></div>
-            <div className="case-details-row"><span className="k">Bussines</span><span className="v">{w.kind}</span></div>
-            <div className="case-details-row"><span className="k">Type of Project</span><span className="v">{w.typeOfProject || "Collaboration with Estudi Santamaria."}</span></div>
+            <div className="case-section-head">{t("CASE.details_head")}</div>
+            <div className="case-details-row"><span className="k">{t("CASE.k_category")}</span><span className="v">{tp(w, "category")}</span></div>
+            <div className="case-details-row"><span className="k">{t("CASE.k_year")}</span><span className="v">{w.year}</span></div>
+            <div className="case-details-row"><span className="k">{t("CASE.k_business")}</span><span className="v">{tp(w, "kind")}</span></div>
+            <div className="case-details-row"><span className="k">{t("CASE.k_type")}</span><span className="v">{tp(w, "typeOfProject") || t("CASE.type_default")}</span></div>
           </div>
 
           <div className="case-section">
-            <div className="case-section-head">Feature</div>
+            <div className="case-section-head">{t("CASE.feature_head")}</div>
             <ul className="case-feature-list">
               {services.map((s, i) => <li key={i}>{s}</li>)}
             </ul>
@@ -341,7 +351,7 @@ function CaseStudy({ caseId, setScreen, openCase }) {
 
           <image-slot
             id={`case-main-${w.id}`}
-            placeholder={`Drop a ${w.name} image`}
+            placeholder={t("IMG.case_main", { name: w.name })}
             shape="rect"
             fit="cover">
           </image-slot>
@@ -371,6 +381,7 @@ function CaseStudy({ caseId, setScreen, openCase }) {
    ABOUT
    ===================================================================== */
 function AboutScreen({ setScreen }) {
+  const { t } = useLang();
   return (
     <section className="section section-tight">
       <div className="container">
@@ -379,41 +390,26 @@ function AboutScreen({ setScreen }) {
             <image-slot
               id="about-portrait"
               src="assets/about-placeholder.svg"
-              placeholder="Click or drop a portrait"
+              placeholder={t("IMG.about")}
               shape="rect"
               fit="cover">
             </image-slot>
           </div>
 
           <div className="about-body">
-            <h2 className="about-title">As a human, as a designer.</h2>
-            <p>Hi, I'm Alberto Soler. A designer based in Barcelona in pursuit of greatness. I'm specialized in Brand Strategy, Visual Communication, Packaging 
-and UI Design.
+            <h2 className="about-title">{t("ABOUT.title")}</h2>
+            <p>{t("ABOUT.p1")}</p>
+            <p>{t("ABOUT.p2")}</p>
+            <p>{t("ABOUT.p3")}</p>
+            <p>{t("ABOUT.p4")}</p>
 
+            <h3 className="about-h" style={{ fontSize: "56px" }}>{t("ABOUT.h2")}</h3>
 
-            </p>
-            <p>As a human, I like to describe myself as sensitive and emotional — that's why my work routine bases itself in listening, understanding and thinking.
-I truly believe every design decision starts with a correct comprehension of the problem and the seek of a solution.
-
-
-
-            </p>
-            <p>As a designer, I see myself as a guide leading projects with careful attention to my clients, understanding their needs and translating them into creative and effective outcomes.</p>
-            <p>My growing interest in Swiss design, sustainability, and conscious design has shaped the way I approach my work. It has taught me to view design not only as a form of visual communication, but as a universal tool capable of driving positive change and creating lasting impact.</p>
-
-            <h3 className="about-h" style={{ fontSize: "56px" }}>My Life.</h3>
-
-            <p>Outside the studio, life feeds the work. I grew up between Badalona and Montgat next to the coast, and most of what I care about — food, music, type, the way a shopfront is lettered — started as something I noticed walking around. I still collect those details obsessively.
-
-
-
-
-
-            </p>
+            <p>{t("ABOUT.p5")}</p>
 
             <div style={{ marginTop: 32 }}>
               <button className="btn" onClick={() => setScreen("contact")}>
-                Start a conversation <I.ArrowRight />
+                {t("ABOUT.cta")} <I.ArrowRight />
               </button>
             </div>
           </div>
@@ -427,19 +423,17 @@ I truly believe every design decision starts with a correct comprehension of the
    CONTACT
    ===================================================================== */
 function ContactScreen() {
+  const { t } = useLang();
   return (
     <section className="section section-tight">
       <div className="container">
         <div className="contact-grid">
           <div className="contact-side">
-            <p>
-              Form below or text me directly via email or social media. I read every brief
-              personally and reply within less than two working days.
-            </p>
+            <p>{t("CONTACT.intro")}</p>
             <div className="channels">
               <a href="mailto:alberto.soleralemany@gmail.com">alberto.soleralemany@gmail.com</a>
-              <a href="#" target="_blank" rel="noreferrer">Instagram</a>
-              <a href="https://linkedin.com/in/alberto-soler-alemany-22b45621b/" target="_blank" rel="noreferrer">LinkedIn</a>
+              <a href="#" target="_blank" rel="noreferrer">{t("CONTACT.ch_instagram")}</a>
+              <a href="https://linkedin.com/in/alberto-soler-alemany-22b45621b/" target="_blank" rel="noreferrer">{t("CONTACT.ch_linkedin")}</a>
             </div>
           </div>
           <div className="contact-form-wrap">
