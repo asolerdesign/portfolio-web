@@ -95,7 +95,7 @@ export const STRINGS = {
   es: {
     // Nav
     "NAV.work": "Proyectos",
-    "NAV.about": "Sobre Mi",
+    "NAV.about": "Sobre Mí",
     "NAV.contact": "Contacto",
     // Home
     "HOME.title": "Diseño Gráfico\n& Comunicación Visual",
@@ -122,7 +122,7 @@ export const STRINGS = {
     "ABOUT.p2": "Como persona, me gusta describirme como alguien sensible y emocional, por eso, mi rutina de trabajo se basa en escuchar, comprender y reflexionar. Creo firmemente que toda decisión de diseño parte de una comprensión correcta del problema y de la búsqueda de una solución firme.",
     "ABOUT.p3": "Como diseñador, me considero un guía que dirige los proyectos prestando especial atención a mis clientes, comprendiendo sus necesidades y traduciéndolas en resultados creativos y eficaces.",
     "ABOUT.p4": "Mi creciente interés por el diseño suizo, la sostenibilidad y el diseño consciente ha marcado mi forma de enfocar mi trabajo. Me ha enseñado a considerar el diseño no solo como una forma de comunicación visual, sino como una herramienta universal capaz de impulsar un cambio positivo y generar un impacto duradero.",
-    "ABOUT.h2": "Sobre Mi.",
+    "ABOUT.h2": "Sobre Mí.",
     "ABOUT.p5": "Fuera del estudio, la vida inspira mi trabajo. Crecí entre Badalona y Montgat, cerca de la costa, y la mayor parte de lo que me apasiona —la comida, la música, la tipografía, el diseño de los letreros de las tiendas— surgió de cosas que me llamaban la atención mientras paseaba. Sigo recopilando esos detalles de forma obsesiva.",
     "ABOUT.cta": "Empieza una conversación.",
     // Contact
@@ -135,7 +135,7 @@ export const STRINGS = {
     "FORM.label_email": "Email",
     "FORM.ph_email": "hello@example.com",
     "FORM.label_message": "Cuéntame sobre tu proyecto",
-    "FORM.ph_message": "Qué haces, qué necesitas, cual es el timing.",
+    "FORM.ph_message": "Qué haces, qué necesitas, cuál es el timing.",
     "FORM.attach": "Adjunta archivos",
     "FORM.send": "Enviar",
     "FORM.sending": "Enviando…",
@@ -148,7 +148,7 @@ export const STRINGS = {
     "FOOTER.cta": "¡Hablemos!",
     "FOOTER.home": "home",
     "FOOTER.work": "proyectos",
-    "FOOTER.about": "sobre mi",
+    "FOOTER.about": "sobre mí",
     "FOOTER.contact": "contacto",
     "FOOTER.copyright": "© 2026 Alberto Soler · Montgat, Barcelona",
     "FOOTER.lang_note": "EN · ES",
