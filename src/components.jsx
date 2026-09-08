@@ -465,8 +465,7 @@ function Footer({ setScreen }) {
             <a onClick={() => setScreen("contact")}>{t("FOOTER.contact")}</a>
           </div>
           <div className="footer-links">
-            <a className="footer-mail" href="mailto:alberto.soleralemany@gmail.com">alberto.soleralemany@gmail.com</a>
-            <a href="https://www.instagram.com/icy.port" target="_blank" rel="noreferrer">Instagram</a>
+            <a className="footer-mail" href="mailto:work@albertosolerdesign.com">work@albertosolerdesign.com</a>
             <a href="https://linkedin.com/in/alberto-soler-alemany-22b45621b/" target="_blank" rel="noreferrer">LinkedIn</a>
           </div>
         </div>

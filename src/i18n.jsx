@@ -45,7 +45,6 @@ export const STRINGS = {
     "ABOUT.cta": "Start a conversation",
     // Contact
     "CONTACT.intro": "Form below or text me directly via email or social media. I read every brief personally and reply within less than two working days.",
-    "CONTACT.ch_instagram": "Instagram",
     "CONTACT.ch_linkedin": "LinkedIn",
     // Form
     "FORM.label_name": "Your name",
@@ -127,7 +126,6 @@ export const STRINGS = {
     "ABOUT.cta": "Empieza una conversación.",
     // Contact
     "CONTACT.intro": "Rellena el formulario que aparece a continuación o envíame un mensaje directamente por correo electrónico o a través de las redes sociales.",
-    "CONTACT.ch_instagram": "Instagram",
     "CONTACT.ch_linkedin": "LinkedIn",
     // Form
     "FORM.label_name": "Tu nombre",

@@ -90,7 +90,7 @@ function HomeScreen({ setScreen }) {
 /* Single horizontal carousel used by WorkScreen. Extracted so multiple
    sections (Visual Identity, Creative Playground, …) can share the same
    chrome and behaviour. */
-function WorkCarousel({ title, items, openCase }) {
+function WorkCarousel({ title, items, openCase, comingSoon }) {
   const { t } = useLang();
   const trackRef = React.useRef(null);
   const draggedRef = React.useRef(false);
@@ -167,6 +167,15 @@ function WorkCarousel({ title, items, openCase }) {
               </div>
             </article>
           )}
+
+          {/* Placeholder for an unannounced project: no link, no case study. */}
+          {comingSoon ?
+          <article className="work-card work-card-soon" aria-label="Coming soon">
+              <div className="work-card-image">
+                <span className="work-card-soon-label">Coming soon</span>
+              </div>
+            </article> :
+          null}
         </div>
       </div>
 
@@ -200,7 +209,7 @@ function WorkScreen({ openCase, setScreen }) {
         <Breadcrumbs path={["home", "work"]} setScreen={setScreen} />
       </div>
 
-      <WorkCarousel title={t("WORK.section_title")} items={identityProjects} openCase={openCase} />
+      <WorkCarousel title={t("WORK.section_title")} items={identityProjects} openCase={openCase} comingSoon />
     </section>);
 
 }
@@ -431,8 +440,7 @@ function ContactScreen() {
           <div className="contact-side">
             <p>{t("CONTACT.intro")}</p>
             <div className="channels">
-              <a href="mailto:alberto.soleralemany@gmail.com">alberto.soleralemany@gmail.com</a>
-              <a href="#" target="_blank" rel="noreferrer">{t("CONTACT.ch_instagram")}</a>
+              <a href="mailto:work@albertosolerdesign.com">work@albertosolerdesign.com</a>
               <a href="https://linkedin.com/in/alberto-soler-alemany-22b45621b/" target="_blank" rel="noreferrer">{t("CONTACT.ch_linkedin")}</a>
             </div>
           </div>

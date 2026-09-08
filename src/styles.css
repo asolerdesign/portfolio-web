@@ -588,6 +588,24 @@ body.show-grid .grid-overlay { display: block; }
 .work-card-image image-slot::part(image),
 .work-card-image image-slot img { width: 100%; height: 100%; object-fit: cover; }
 
+/* Placeholder card for an unannounced project — inert (no link, no hover). */
+.work-card-soon { cursor: default; }
+.work-card-soon .work-card-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gray);
+}
+.work-card-soon-label {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--black);
+  border: 1px solid var(--black);
+  padding: 10px 16px;
+}
+
 .work-card-hover {
   position: absolute;
   left: 0; right: 0; bottom: 0;
