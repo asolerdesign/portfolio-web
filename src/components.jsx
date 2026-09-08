@@ -456,7 +456,7 @@ function Footer({ setScreen }) {
       <div className="container">
         <div className="footer-grid">
           <div>
-            <div className="footer-wm" style={{ fontSize: "75px", lineHeight: "0.9" }}>{t("FOOTER.cta")}</div>
+            <div className="footer-wm" style={{ lineHeight: "0.9" }}>{t("FOOTER.cta")}</div>
           </div>
           <div className="footer-links footer-links-pages">
             <a onClick={() => setScreen("home")}>{t("FOOTER.home")}</a>

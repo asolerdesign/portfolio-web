@@ -102,10 +102,11 @@ body.show-grid .grid-overlay { display: block; }
   padding-block: 26px 10px;
 }
 .nav-wordmark-wrap { grid-column: 1 / span 6; }
-.nav-links-wrap    { grid-column: 7 / -1; display: flex; justify-content: flex-end; align-items: baseline; gap: 56px; }
+.nav-links-wrap    { grid-column: 7 / -1; display: flex; justify-content: flex-end; align-items: baseline; gap: clamp(20px, 3vw, 44px); }
 .nav-toggle-wrap   { grid-column: 7 / -1; display: none; justify-content: flex-end; }
 .nav-wordmark {
   font-weight: 800;
+  white-space: nowrap;
   font-size: var(--wordmark-size);
   letter-spacing: 0.005em;
   text-transform: uppercase;
@@ -115,11 +116,14 @@ body.show-grid .grid-overlay { display: block; }
 }
 .nav-links {
   display: flex;
-  gap: 56px;
+  gap: clamp(20px, 3vw, 44px);
   align-items: baseline;
 }
 .nav-link {
-  font-size: var(--nav-link-size);
+  /* Scale down with the viewport (capped at the tweakable size) and never
+     wrap to a second line — longer ES labels would otherwise break the nav. */
+  font-size: clamp(16px, 2.1vw, var(--nav-link-size));
+  white-space: nowrap;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--gray);
@@ -1242,7 +1246,10 @@ body.show-grid .grid-overlay { display: block; }
 
 .footer-wm {
   font-weight: 700;
-  font-size: clamp(56px, 9vw, 128px);
+  /* Scales with the viewport so the single-word ES "¡Hablemos!" never
+     overflows its grid cell onto the link columns (capped at the 75px the
+     design uses on desktop). */
+  font-size: clamp(28px, 5.9vw, 75px);
   letter-spacing: -0.045em;
   line-height: 0.88;
   text-transform: uppercase;
