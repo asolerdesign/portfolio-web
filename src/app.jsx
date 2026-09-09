@@ -57,12 +57,12 @@ function App() {
 
   let body;
   switch (screen) {
-    case "home":    body = <HomeScreen setScreen={setScreen} />; break;
+    case "home":    body = <HomeScreen setScreen={setScreen} openCase={openCase} />; break;
     case "work":    body = <WorkScreen openCase={openCase} setScreen={setScreen} />; break;
     case "case":    body = <CaseStudy caseId={caseId} setScreen={setScreen} openCase={openCase} />; break;
     case "about":   body = <AboutScreen setScreen={setScreen} />; break;
     case "contact": body = <ContactScreen />; break;
-    default:        body = <HomeScreen setScreen={setScreen} />;
+    default:        body = <HomeScreen setScreen={setScreen} openCase={openCase} />;
   }
 
   return (

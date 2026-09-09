@@ -50,36 +50,106 @@ const WORKS = [
 /* =====================================================================
    HOME — matches the reference image
    ===================================================================== */
-function HomeScreen({ setScreen }) {
+function HomeScreen({ setScreen, openCase }) {
   const { t } = useLang();
+  const revealRef = React.useRef(null);
+
+  // Fade the shots + CTA in as they enter the viewport. Anyone who asked for
+  // reduced motion (or has no IntersectionObserver) simply gets them visible.
+  React.useEffect(() => {
+    const root = revealRef.current;
+    if (!root) return;
+    const els = Array.from(root.querySelectorAll(".home-reveal"));
+    if (!els.length) return;
+
+    const reduced =
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduced || typeof IntersectionObserver === "undefined") {
+      els.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+
+    let pending = els.slice();
+    let raf = 0;
+
+    const show = (el) => {
+      el.classList.add("is-visible");
+      pending = pending.filter((x) => x !== el);
+      io.unobserve(el);
+      if (!pending.length) cleanup();
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) show(entry.target);
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -10% 0px" });
+
+    els.forEach((el) => io.observe(el));
+
+    // Safety net: a jump scroll (End key, scrollbar drag, scroll restoration)
+    // can skip every intersecting frame, so the observer never fires and the
+    // element would stay invisible. Sweep anything already at or above the fold.
+    const sweep = () => {
+      raf = 0;
+      pending.slice().forEach((el) => {
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.9) show(el);
+      });
+    };
+    const onScroll = () => {if (!raf) raf = requestAnimationFrame(sweep);};
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    function cleanup() {
+      io.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    }
+    return cleanup;
+  }, []);
+
+  const shot = (slotId, caseId, name) =>
+  <article
+    className="home-shot home-reveal"
+    onClick={() => openCase && openCase(caseId)}
+    role="link"
+    tabIndex="0"
+    onKeyDown={(e) => {if (e.key === "Enter" && openCase) openCase(caseId);}}>
+
+      <div className="home-shot-media">
+        <image-slot
+        id={slotId}
+        placeholder={name}
+        shape="rect"
+        fit="cover">
+      </image-slot>
+      </div>
+      <div className="home-shot-hover">
+        <span className="work-card-hover-name">{name}</span>
+      </div>
+    </article>;
+
   return (
     <>
       <div className="container">
         <HeroPhoto slotId="home-hero" placeholderLabel={t("IMG.hero")} />
       </div>
 
-      <section className="container">
-        <div className="hero-block">
-          <div className="hero-title-wrap">
-            <h1 className="hero-title">
-              {t("HOME.title").split("\n").map((ln, i) =>
-                <React.Fragment key={i}>{i > 0 ? <br /> : null}{ln}</React.Fragment>
-              )}
-            </h1>
-          </div>
+      <div className="container home-shots" ref={revealRef}>
+        {shot("home-can-soler", "can-soler", "Can Soler")}
+        {shot("home-saint-louis", "saint-louis", "Saint Louis")}
 
-          <div className="hero-meta-wrap">
-            <div className="meta-table">
-              <div className="row single"><span className="v" style={{ fontWeight: "700" }}>{t("HOME.based")}</span></div>
-              <div className="row single"><span className="v" style={{ fontWeight: "500" }}>{t("HOME.intro")}</span></div>
-              <div className="row">
-                <span className="k" style={{ fontWeight: "400" }}>{t("HOME.meta_label")}</span>
-                <span className="v">{t("HOME.disciplines")}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        <button
+          type="button"
+          className="home-work-cta home-reveal"
+          onClick={() => setScreen("work")}>
+
+          A SELECTION OF MY WORK
+        </button>
+      </div>
     </>);
 
 }
