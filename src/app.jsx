@@ -39,6 +39,27 @@ function App() {
 
   const openCase = (id) => { setCaseId(id); setScreen("case"); };
 
+  // Minimal curtain wipe between pages. It is only ever mounted while a
+  // transition runs, so it can never be left stuck over the page, and it
+  // steps aside entirely for prefers-reduced-motion.
+  const [curtain, setCurtain] = useState(null); // null | "in" | "out"
+  const timers = React.useRef([]);
+  const clearTimers = () => { timers.current.forEach(clearTimeout); timers.current = []; };
+  useEffect(() => clearTimers, []);
+
+  const withCurtain = (go) => {
+    const reduced = typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) { go(); return; }
+    clearTimers();
+    setCurtain("in");
+    timers.current.push(setTimeout(() => {
+      go();
+      setCurtain("out");
+      timers.current.push(setTimeout(() => setCurtain(null), 420));
+    }, 340));
+  };
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [screen, caseId]);
@@ -57,12 +78,12 @@ function App() {
 
   let body;
   switch (screen) {
-    case "home":    body = <HomeScreen setScreen={setScreen} openCase={openCase} />; break;
+    case "home":    body = <HomeScreen setScreen={setScreen} openCase={(id) => withCurtain(() => openCase(id))} />; break;
     case "work":    body = <WorkScreen openCase={openCase} setScreen={setScreen} />; break;
     case "case":    body = <CaseStudy caseId={caseId} setScreen={setScreen} openCase={openCase} />; break;
     case "about":   body = <AboutScreen setScreen={setScreen} />; break;
     case "contact": body = <ContactScreen />; break;
-    default:        body = <HomeScreen setScreen={setScreen} openCase={openCase} />;
+    default:        body = <HomeScreen setScreen={setScreen} openCase={(id) => withCurtain(() => openCase(id))} />;
   }
 
   return (
@@ -72,6 +93,8 @@ function App() {
         {body}
       </div>
       <Footer setScreen={setScreen} />
+
+      {curtain ? <div className={`curtain curtain-${curtain}`} aria-hidden="true" /> : null}
 
       <GridOverlay cols={t.gridCols} />
 

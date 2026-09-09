@@ -50,6 +50,68 @@ const WORKS = [
 /* =====================================================================
    HOME — matches the reference image
    ===================================================================== */
+/* One home shot: a stack of the project's images, cross-fading through the
+   2nd and 3rd while hovered and settling back on the 1st on leave. All three
+   sit in the DOM so the browser has them decoded before the first hover. */
+const HOVER_HOLD_MS = 1150; // long enough to actually take each image in
+
+function HomeShot({ images, caseId, name, openCase }) {
+  const [active, setActive] = React.useState(0);
+  const timer = React.useRef(null);
+
+  const prefersReduced = () =>
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const stop = () => {
+    if (timer.current) {clearInterval(timer.current);timer.current = null;}
+  };
+
+  const start = () => {
+    if (images.length < 2 || prefersReduced()) return;
+    stop();
+    setActive(1); // 2nd
+    timer.current = setInterval(
+      () => setActive((i) => (i + 1) % images.length), // 3rd, then 1st, looping
+      HOVER_HOLD_MS);
+
+  };
+
+  const reset = () => {stop();setActive(0);};
+
+  React.useEffect(() => stop, []);
+
+  return (
+    <article
+      className="home-shot home-reveal"
+      onClick={() => openCase && openCase(caseId)}
+      onMouseEnter={start}
+      onMouseLeave={reset}
+      onFocus={start}
+      onBlur={reset}
+      role="link"
+      tabIndex="0"
+      onKeyDown={(e) => {if (e.key === "Enter" && openCase) openCase(caseId);}}>
+
+      <div className="home-shot-media">
+        {images.map((src, i) =>
+        <img
+          key={src}
+          src={src}
+          alt={i === 0 ? name : ""}
+          aria-hidden={i > 0}
+          className={`home-shot-img${i === active ? " is-on" : ""}`}
+          decoding="async"
+          draggable="false" />
+        )}
+      </div>
+      <div className="home-shot-hover">
+        <span className="work-card-hover-name">{name}</span>
+      </div>
+    </article>);
+
+}
+
 function HomeScreen({ setScreen, openCase }) {
   const { t } = useLang();
   const revealRef = React.useRef(null);
@@ -111,28 +173,6 @@ function HomeScreen({ setScreen, openCase }) {
     return cleanup;
   }, []);
 
-  const shot = (slotId, caseId, name, src) =>
-  <article
-    className="home-shot home-reveal"
-    onClick={() => openCase && openCase(caseId)}
-    role="link"
-    tabIndex="0"
-    onKeyDown={(e) => {if (e.key === "Enter" && openCase) openCase(caseId);}}>
-
-      <div className="home-shot-media">
-        <image-slot
-        id={slotId}
-        src={src}
-        placeholder={name}
-        shape="rect"
-        fit="cover">
-      </image-slot>
-      </div>
-      <div className="home-shot-hover">
-        <span className="work-card-hover-name">{name}</span>
-      </div>
-    </article>;
-
   return (
     <>
       <div className="container">
@@ -140,8 +180,23 @@ function HomeScreen({ setScreen, openCase }) {
       </div>
 
       <div className="container home-shots" ref={revealRef}>
-        {shot("home-can-soler", "can-soler", "Can Soler", "assets/home-can-soler.jpg")}
-        {shot("home-saint-louis", "saint-louis", "Saint Louis", "assets/home-saint-louis.png")}
+        <HomeShot
+          caseId="can-soler"
+          name="Can Soler"
+          openCase={openCase}
+          images={[
+          "assets/home-can-soler.jpg",
+          "assets/home-can-soler-2.webp",
+          "assets/home-can-soler-3.webp"]} />
+
+        <HomeShot
+          caseId="saint-louis"
+          name="Saint Louis"
+          openCase={openCase}
+          images={[
+          "assets/home-saint-louis.webp",
+          "assets/home-saint-louis-2.webp",
+          "assets/home-saint-louis-3.webp"]} />
 
         <button
           type="button"
