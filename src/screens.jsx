@@ -111,7 +111,7 @@ function HomeScreen({ setScreen, openCase }) {
     return cleanup;
   }, []);
 
-  const shot = (slotId, caseId, name) =>
+  const shot = (slotId, caseId, name, src) =>
   <article
     className="home-shot home-reveal"
     onClick={() => openCase && openCase(caseId)}
@@ -122,6 +122,7 @@ function HomeScreen({ setScreen, openCase }) {
       <div className="home-shot-media">
         <image-slot
         id={slotId}
+        src={src}
         placeholder={name}
         shape="rect"
         fit="cover">
@@ -139,8 +140,8 @@ function HomeScreen({ setScreen, openCase }) {
       </div>
 
       <div className="container home-shots" ref={revealRef}>
-        {shot("home-can-soler", "can-soler", "Can Soler")}
-        {shot("home-saint-louis", "saint-louis", "Saint Louis")}
+        {shot("home-can-soler", "can-soler", "Can Soler", "assets/home-can-soler.jpg")}
+        {shot("home-saint-louis", "saint-louis", "Saint Louis", "assets/home-saint-louis.png")}
 
         <button
           type="button"
