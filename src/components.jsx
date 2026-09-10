@@ -112,7 +112,7 @@ function HeroPhoto({ slotId = "hero-photo", aspect, placeholderLabel = "Click or
     <div className="hero-photo bw-photo-bg" style={aspect ? { aspectRatio: aspect } : null}>
       <image-slot
         id={slotId}
-        src="assets/hero-portrait.jpg"
+        src="/assets/hero-portrait.webp"
         placeholder={placeholderLabel}
         shape="rect"
         fit="cover">

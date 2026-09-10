@@ -44,6 +44,7 @@ function App() {
   // steps aside entirely for prefers-reduced-motion.
   const [curtain, setCurtain] = useState(null); // null | "in" | "out"
   const timers = React.useRef([]);
+  const run = React.useRef(0); // remounts the curtain so a re-entered wipe restarts
   const clearTimers = () => { timers.current.forEach(clearTimeout); timers.current = []; };
   useEffect(() => clearTimers, []);
 
@@ -52,12 +53,23 @@ function App() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) { go(); return; }
     clearTimers();
+    run.current += 1;
     setCurtain("in");
     timers.current.push(setTimeout(() => {
       go();
       setCurtain("out");
       timers.current.push(setTimeout(() => setCurtain(null), 420));
     }, 340));
+  };
+
+  // Every page change wears the curtain — nav links, breadcrumbs, the footer,
+  // the home CTA, a project card. The single exception is the prev/next pair
+  // inside a case study, which gets the raw openCase as `stepCase`. Navigating
+  // to the page you are already on is a no-op rather than a wipe over nothing.
+  const goScreen = (s) => { if (s !== screen) withCurtain(() => setScreen(s)); };
+  const goCase = (id) => {
+    if (screen === "case" && id === caseId) return;
+    withCurtain(() => openCase(id));
   };
 
   useEffect(() => {
@@ -78,23 +90,23 @@ function App() {
 
   let body;
   switch (screen) {
-    case "home":    body = <HomeScreen setScreen={setScreen} openCase={(id) => withCurtain(() => openCase(id))} />; break;
-    case "work":    body = <WorkScreen openCase={openCase} setScreen={setScreen} />; break;
-    case "case":    body = <CaseStudy caseId={caseId} setScreen={setScreen} openCase={openCase} />; break;
-    case "about":   body = <AboutScreen setScreen={setScreen} />; break;
+    case "work":    body = <WorkScreen openCase={goCase} setScreen={goScreen} />; break;
+    case "case":    body = <CaseStudy caseId={caseId} setScreen={goScreen} stepCase={openCase} />; break;
+    case "about":   body = <AboutScreen setScreen={goScreen} />; break;
     case "contact": body = <ContactScreen />; break;
-    default:        body = <HomeScreen setScreen={setScreen} openCase={(id) => withCurtain(() => openCase(id))} />;
+    case "home":
+    default:        body = <HomeScreen setScreen={goScreen} openCase={goCase} />;
   }
 
   return (
     <LangProvider>
-      <TopNav screen={screen === "case" ? "work" : screen} setScreen={setScreen} />
+      <TopNav screen={screen === "case" ? "work" : screen} setScreen={goScreen} />
       <div data-screen-label={screen[0].toUpperCase() + screen.slice(1)}>
         {body}
       </div>
-      <Footer setScreen={setScreen} />
+      <Footer setScreen={goScreen} />
 
-      {curtain ? <div className={`curtain curtain-${curtain}`} aria-hidden="true" /> : null}
+      {curtain ? <div key={run.current} className={`curtain curtain-${curtain}`} aria-hidden="true" /> : null}
 
       <GridOverlay cols={t.gridCols} />
 

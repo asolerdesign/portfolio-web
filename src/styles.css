@@ -1016,6 +1016,44 @@ body.show-grid .grid-overlay { display: block; }
   margin-top: 24px;
 }
 
+/* ----- Phone: case-study imagery shows whole, never cropped -------------
+   The desktop crop is a deliberate composition, but on a ~390px column it
+   slices through the very thing an image exists to show — the Saint Louis
+   logo, a packaging lockup. Below 720px the frame letterboxes the image
+   instead of filling itself with a crop of it. Desktop is untouched. */
+@media (max-width: 720px) {
+  /* A plain <img> can simply take its own height: no crop, no bars. */
+  .case-media-img {
+    aspect-ratio: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* <image-slot> paints into a fixed frame, so it letterboxes instead. The
+     case main keeps the desktop 4/5 rather than the 4/3 it used here —
+     nearly every one is portrait, so 4/5 is the box that wastes the least.
+     The gallery mixes portrait and landscape, so its cards go square: the
+     mat stays even whichever way up the next image is. */
+  .case-media image-slot { aspect-ratio: 4 / 5; }
+  .case-gallery-card { aspect-ratio: 1 / 1; width: 86%; }
+
+  /* The slot sizes its inner <img> with inline styles (the cover crop is
+     stored per slot), and an inline declaration outranks a plain rule —
+     hence !important, the one thing that still outranks it. */
+  .case-media image-slot::part(image),
+  .case-gallery-card image-slot::part(image) {
+    left: 50% !important;
+    top: 50% !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+  /* Drop the frame's own tint so the letterbox reads as one flat field of
+     the card colour behind it. */
+  .case-media image-slot::part(frame),
+  .case-gallery-card image-slot::part(frame) { background: transparent; }
+}
+
 .case-nav {
   display: grid;
   grid-template-columns: repeat(var(--grid-cols), 1fr);
