@@ -51,28 +51,54 @@ const WORKS = [
    HOME — matches the reference image
    ===================================================================== */
 /* One home shot: a stack of the project's images, cross-fading through the
-   2nd and 3rd while hovered and settling back on the 1st on leave. All three
-   sit in the DOM so the browser has them decoded before the first hover. */
+   2nd and 3rd while hovered and settling back on the 1st on leave. */
 const HOVER_HOLD_MS = 1150; // long enough to actually take each image in
 
-function HomeShot({ images, caseId, name, openCase }) {
+/* Each shot ships as a width ladder so a phone never pulls the desktop file.
+   The files were pre-cropped to the slot's tallest possible aspect (4/3 — the
+   phone breakpoint and the tallest hero aspect the Tweaks panel offers), so
+   object-fit:cover frames them exactly as it did before. */
+const SHOT_WIDTHS = {
+  "can-soler-1":   [480, 768, 1152, 1536],
+  "can-soler-2":   [480, 768, 1060],
+  "can-soler-3":   [480, 768, 1152],
+  "saint-louis-1": [480, 768, 1152, 1536],
+  "saint-louis-2": [480, 768, 1152],
+  "saint-louis-3": [480, 768, 1152]
+};
+const SHOT_SIZES = "100vw";
+const shotUrl = (n, w) => `/assets/home/${n}-${w}.webp`;
+const shotSrc = (n) => shotUrl(n, SHOT_WIDTHS[n][SHOT_WIDTHS[n].length - 1]);
+const shotSrcSet = (n) => SHOT_WIDTHS[n].map((w) => `${shotUrl(n, w)} ${w}w`).join(", ");
+
+const mq = (q) =>
+typeof window.matchMedia === "function" && window.matchMedia(q).matches;
+
+function HomeShot({ frames, caseId, name, openCase }) {
   const [active, setActive] = React.useState(0);
+  // Frames 2 and 3 only ever show on hover, so a touch device — which can
+  // never trigger the rotation — is not made to download them. Resolved after
+  // mount so the first paint is never held up by a media query.
+  const [rotates, setRotates] = React.useState(false);
   const timer = React.useRef(null);
 
-  const prefersReduced = () =>
-  typeof window.matchMedia === "function" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  React.useEffect(() => {
+    setRotates(mq("(hover: hover) and (pointer: fine)") &&
+    !mq("(prefers-reduced-motion: reduce)"));
+  }, []);
+
+  const shown = rotates ? frames : frames.slice(0, 1);
 
   const stop = () => {
     if (timer.current) {clearInterval(timer.current);timer.current = null;}
   };
 
   const start = () => {
-    if (images.length < 2 || prefersReduced()) return;
+    if (shown.length < 2) return;
     stop();
     setActive(1); // 2nd
     timer.current = setInterval(
-      () => setActive((i) => (i + 1) % images.length), // 3rd, then 1st, looping
+      () => setActive((i) => (i + 1) % shown.length), // 3rd, then 1st, looping
       HOVER_HOLD_MS);
 
   };
@@ -94,14 +120,19 @@ function HomeShot({ images, caseId, name, openCase }) {
       onKeyDown={(e) => {if (e.key === "Enter" && openCase) openCase(caseId);}}>
 
       <div className="home-shot-media">
-        {images.map((src, i) =>
+        {shown.map((n, i) =>
         <img
-          key={src}
-          src={src}
+          key={n}
+          src={shotSrc(n)}
+          srcSet={shotSrcSet(n)}
+          sizes={SHOT_SIZES}
           alt={i === 0 ? name : ""}
           aria-hidden={i > 0}
           className={`home-shot-img${i === active ? " is-on" : ""}`}
           decoding="async"
+          /* The 1st frame is the one on screen and is preloaded from the
+             document head; the hover frames wait their turn. */
+          fetchpriority={i === 0 ? "high" : "low"}
           draggable="false" />
         )}
       </div>
@@ -184,19 +215,13 @@ function HomeScreen({ setScreen, openCase }) {
           caseId="can-soler"
           name="Can Soler"
           openCase={openCase}
-          images={[
-          "assets/home-can-soler.jpg",
-          "assets/home-can-soler-2.webp",
-          "assets/home-can-soler-3.webp"]} />
+          frames={["can-soler-1", "can-soler-2", "can-soler-3"]} />
 
         <HomeShot
           caseId="saint-louis"
           name="Saint Louis"
           openCase={openCase}
-          images={[
-          "assets/home-saint-louis.webp",
-          "assets/home-saint-louis-2.webp",
-          "assets/home-saint-louis-3.webp"]} />
+          frames={["saint-louis-1", "saint-louis-2", "saint-louis-3"]} />
 
         <button
           type="button"
@@ -427,7 +452,11 @@ function CaseGallery({ caseId, caseName, count }) {
 
 }
 
-function CaseStudy({ caseId, setScreen, openCase }) {
+/* `stepCase` is the only navigation on this page that does NOT wear the page
+   curtain: the prev/next pair at the foot reads as moving along one shelf of
+   projects, not as leaving the page. `setScreen` is curtained like everywhere
+   else. */
+function CaseStudy({ caseId, setScreen, stepCase }) {
   const { t, tp } = useLang();
   const w = WORKS.find((x) => x.id === caseId) || WORKS[0];
   const idx = WORKS.findIndex((x) => x.id === caseId);
@@ -498,12 +527,12 @@ function CaseStudy({ caseId, setScreen, openCase }) {
 
       <div className="container case-nav">
         {prev ? (
-          <button className="case-nav-side" onClick={() => openCase(prev.id)}>
+          <button className="case-nav-side" onClick={() => stepCase(prev.id)}>
             <span className="case-nav-name">← {prev.name}</span>
           </button>
         ) : null}
         {next ? (
-          <button className="case-nav-side right" onClick={() => openCase(next.id)}>
+          <button className="case-nav-side right" onClick={() => stepCase(next.id)}>
             <span className="case-nav-name">{next.name} →</span>
           </button>
         ) : null}

@@ -6,6 +6,18 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <meta name="description" content="Alberto Soler — graphic design &amp; visual communication. Brand strategy, visual identity and art direction, based in Barcelona."/>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+
+  <!-- Home is always the entry screen, so its three visible photographs are
+       fetched while the HTML parses instead of waiting for React to mount.
+       The srcset/sizes below must stay identical to the ones the <img> tags
+       render (src/screens.jsx) or the browser downloads the image twice. -->
+  <link rel="preload" as="image" href="/assets/hero-portrait.webp" fetchpriority="high"/>
+  <link rel="preload" as="image" href="/assets/home/can-soler-1-1536.webp"
+        imagesrcset="/assets/home/can-soler-1-480.webp 480w, /assets/home/can-soler-1-768.webp 768w, /assets/home/can-soler-1-1152.webp 1152w, /assets/home/can-soler-1-1536.webp 1536w"
+        imagesizes="100vw"/>
+  <link rel="preload" as="image" href="/assets/home/saint-louis-1-1536.webp"
+        imagesrcset="/assets/home/saint-louis-1-480.webp 480w, /assets/home/saint-louis-1-768.webp 768w, /assets/home/saint-louis-1-1152.webp 1152w, /assets/home/saint-louis-1-1536.webp 1536w"
+        imagesizes="100vw"/>
 </head>
 <body data-screen-label="Alberto Soler Portfolio">
   <div id="root"></div>
