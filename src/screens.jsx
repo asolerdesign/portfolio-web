@@ -68,8 +68,16 @@ const SHOT_WIDTHS = {
 };
 const SHOT_SIZES = "100vw";
 const shotUrl = (n, w) => `/assets/home/${n}-${w}.webp`;
-const shotSrc = (n) => shotUrl(n, SHOT_WIDTHS[n][SHOT_WIDTHS[n].length - 1]);
-const shotSrcSet = (n) => SHOT_WIDTHS[n].map((w) => `${shotUrl(n, w)} ${w}w`).join(", ");
+/* A frame with no entry in SHOT_WIDTHS ships as a single file under its own
+   name, and simply goes out without a srcset. */
+const shotSrc = (n) =>
+SHOT_WIDTHS[n] ?
+shotUrl(n, SHOT_WIDTHS[n][SHOT_WIDTHS[n].length - 1]) :
+`/assets/home/${n}.webp`;
+const shotSrcSet = (n) =>
+SHOT_WIDTHS[n] ?
+SHOT_WIDTHS[n].map((w) => `${shotUrl(n, w)} ${w}w`).join(", ") :
+undefined;
 
 const mq = (q) =>
 typeof window.matchMedia === "function" && window.matchMedia(q).matches;
@@ -125,7 +133,7 @@ function HomeShot({ frames, caseId, name, openCase }) {
           key={n}
           src={shotSrc(n)}
           srcSet={shotSrcSet(n)}
-          sizes={SHOT_SIZES}
+          sizes={shotSrcSet(n) ? SHOT_SIZES : undefined}
           alt={i === 0 ? name : ""}
           aria-hidden={i > 0}
           className={`home-shot-img${i === active ? " is-on" : ""}`}
@@ -216,6 +224,12 @@ function HomeScreen({ setScreen, openCase }) {
           name="Can Soler"
           openCase={openCase}
           frames={["can-soler-1", "can-soler-2", "can-soler-3"]} />
+
+        <HomeShot
+          caseId="iaia"
+          name="IAIA"
+          openCase={openCase}
+          frames={["home-iaia-1", "home-iaia-2", "home-iaia-3"]} />
 
         <HomeShot
           caseId="saint-louis"
