@@ -55,16 +55,20 @@ const WORKS = [
 const HOVER_HOLD_MS = 1150; // long enough to actually take each image in
 
 /* Each shot ships as a width ladder so a phone never pulls the desktop file.
-   The files were pre-cropped to the slot's tallest possible aspect (4/3 — the
-   phone breakpoint and the tallest hero aspect the Tweaks panel offers), so
-   object-fit:cover frames them exactly as it did before. */
+   The sources are 2:1, which sits between the slot's widest aspect (16/7) and
+   its narrowest (4/3 on phones) — cover trims height at one and width at the
+   other — so they are scaled whole rather than pre-cropped, and the framing
+   holds at every breakpoint. */
 const SHOT_WIDTHS = {
-  "can-soler-1":   [480, 768, 1152, 1536],
-  "can-soler-2":   [480, 768, 1060],
-  "can-soler-3":   [480, 768, 1152],
-  "saint-louis-1": [480, 768, 1152, 1536],
-  "saint-louis-2": [480, 768, 1152],
-  "saint-louis-3": [480, 768, 1152]
+  "home-can-soler-1":   [480, 768, 1152, 1536],
+  "home-can-soler-2":   [480, 768, 1152],
+  "home-can-soler-3":   [480, 768, 1152],
+  "home-iaia-1":        [480, 768, 1152, 1536],
+  "home-iaia-2":        [480, 768, 1152],
+  "home-iaia-3":        [480, 768, 1152],
+  "home-saint-louis-1": [480, 768, 1152, 1536],
+  "home-saint-louis-2": [480, 768, 1152],
+  "home-saint-louis-3": [480, 768, 1152]
 };
 const SHOT_SIZES = "100vw";
 const shotUrl = (n, w) => `/assets/home/${n}-${w}.webp`;
@@ -215,13 +219,19 @@ function HomeScreen({ setScreen, openCase }) {
           caseId="can-soler"
           name="Can Soler"
           openCase={openCase}
-          frames={["can-soler-1", "can-soler-2", "can-soler-3"]} />
+          frames={["home-can-soler-1", "home-can-soler-2", "home-can-soler-3"]} />
+
+        <HomeShot
+          caseId="iaia"
+          name="IAIA"
+          openCase={openCase}
+          frames={["home-iaia-1", "home-iaia-2", "home-iaia-3"]} />
 
         <HomeShot
           caseId="saint-louis"
           name="Saint Louis"
           openCase={openCase}
-          frames={["saint-louis-1", "saint-louis-2", "saint-louis-3"]} />
+          frames={["home-saint-louis-1", "home-saint-louis-2", "home-saint-louis-3"]} />
 
         <button
           type="button"
