@@ -55,29 +55,25 @@ const WORKS = [
 const HOVER_HOLD_MS = 1150; // long enough to actually take each image in
 
 /* Each shot ships as a width ladder so a phone never pulls the desktop file.
-   The files were pre-cropped to the slot's tallest possible aspect (4/3 — the
-   phone breakpoint and the tallest hero aspect the Tweaks panel offers), so
-   object-fit:cover frames them exactly as it did before. */
+   The sources are 2:1, which sits between the slot's widest aspect (16/7) and
+   its narrowest (4/3 on phones) — cover trims height at one and width at the
+   other — so they are scaled whole rather than pre-cropped, and the framing
+   holds at every breakpoint. */
 const SHOT_WIDTHS = {
-  "can-soler-1":   [480, 768, 1152, 1536],
-  "can-soler-2":   [480, 768, 1060],
-  "can-soler-3":   [480, 768, 1152],
-  "saint-louis-1": [480, 768, 1152, 1536],
-  "saint-louis-2": [480, 768, 1152],
-  "saint-louis-3": [480, 768, 1152]
+  "home-can-soler-1":   [480, 768, 1152, 1536],
+  "home-can-soler-2":   [480, 768, 1152],
+  "home-can-soler-3":   [480, 768, 1152],
+  "home-iaia-1":        [480, 768, 1152, 1536],
+  "home-iaia-2":        [480, 768, 1152],
+  "home-iaia-3":        [480, 768, 1152],
+  "home-saint-louis-1": [480, 768, 1152, 1536],
+  "home-saint-louis-2": [480, 768, 1152],
+  "home-saint-louis-3": [480, 768, 1152]
 };
 const SHOT_SIZES = "100vw";
 const shotUrl = (n, w) => `/assets/home/${n}-${w}.webp`;
-/* A frame with no entry in SHOT_WIDTHS ships as a single file under its own
-   name, and simply goes out without a srcset. */
-const shotSrc = (n) =>
-SHOT_WIDTHS[n] ?
-shotUrl(n, SHOT_WIDTHS[n][SHOT_WIDTHS[n].length - 1]) :
-`/assets/home/${n}.webp`;
-const shotSrcSet = (n) =>
-SHOT_WIDTHS[n] ?
-SHOT_WIDTHS[n].map((w) => `${shotUrl(n, w)} ${w}w`).join(", ") :
-undefined;
+const shotSrc = (n) => shotUrl(n, SHOT_WIDTHS[n][SHOT_WIDTHS[n].length - 1]);
+const shotSrcSet = (n) => SHOT_WIDTHS[n].map((w) => `${shotUrl(n, w)} ${w}w`).join(", ");
 
 const mq = (q) =>
 typeof window.matchMedia === "function" && window.matchMedia(q).matches;
@@ -133,7 +129,7 @@ function HomeShot({ frames, caseId, name, openCase }) {
           key={n}
           src={shotSrc(n)}
           srcSet={shotSrcSet(n)}
-          sizes={shotSrcSet(n) ? SHOT_SIZES : undefined}
+          sizes={SHOT_SIZES}
           alt={i === 0 ? name : ""}
           aria-hidden={i > 0}
           className={`home-shot-img${i === active ? " is-on" : ""}`}
@@ -223,7 +219,7 @@ function HomeScreen({ setScreen, openCase }) {
           caseId="can-soler"
           name="Can Soler"
           openCase={openCase}
-          frames={["can-soler-1", "can-soler-2", "can-soler-3"]} />
+          frames={["home-can-soler-1", "home-can-soler-2", "home-can-soler-3"]} />
 
         <HomeShot
           caseId="iaia"
@@ -235,7 +231,7 @@ function HomeScreen({ setScreen, openCase }) {
           caseId="saint-louis"
           name="Saint Louis"
           openCase={openCase}
-          frames={["saint-louis-1", "saint-louis-2", "saint-louis-3"]} />
+          frames={["home-saint-louis-1", "home-saint-louis-2", "home-saint-louis-3"]} />
 
         <button
           type="button"
