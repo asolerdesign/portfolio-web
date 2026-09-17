@@ -265,29 +265,42 @@ function WorkCarousel({ title, items, openCase, comingSoon }) {
     t.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
+  /* Mouse gets the grab-and-drag scroll. Touch and pen do NOT: the browser
+     already pans the track natively (with momentum and snap), and writing
+     scrollLeft from JS on top of that is what swallowed a swipe that started
+     on a card. On those pointers we only *watch* the gesture, so a finger
+     that travels is read as a swipe/scroll and a finger that doesn't is
+     still a tap that opens the project. */
   React.useEffect(() => {
     const t = trackRef.current;
     if (!t) return;
-    let down = false,startX = 0,startScroll = 0;
+    let down = false,dragScroll = false,startX = 0,startY = 0,startScroll = 0;
     const onDown = (e) => {
       down = true;draggedRef.current = false;
-      startX = e.clientX;startScroll = t.scrollLeft;
-      t.classList.add("dragging");
+      dragScroll = e.pointerType === "mouse";
+      startX = e.clientX;startY = e.clientY;startScroll = t.scrollLeft;
+      if (dragScroll) t.classList.add("dragging");
     };
     const onMove = (e) => {
       if (!down) return;
       const dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) draggedRef.current = true;
-      t.scrollLeft = startScroll - dx;
+      // Vertical travel counts too — a page scroll off a card isn't a tap.
+      if (Math.abs(dx) > 4 || Math.abs(e.clientY - startY) > 4) draggedRef.current = true;
+      if (dragScroll) t.scrollLeft = startScroll - dx;
     };
-    const onUp = () => {down = false;t.classList.remove("dragging");};
+    const onUp = () => {down = false;dragScroll = false;t.classList.remove("dragging");};
+    // The browser fires pointercancel the moment it claims the gesture as a
+    // native scroll: that is a swipe by definition, so suppress the click.
+    const onCancel = () => {draggedRef.current = true;onUp();};
     t.addEventListener("pointerdown", onDown);
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onCancel);
     return () => {
       t.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onCancel);
     };
   }, []);
 
