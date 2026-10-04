@@ -319,7 +319,7 @@ body.show-grid .grid-overlay { display: block; }
    weight, with generous room before the next shot. */
 .home-shot-name {
   margin: 16px 0 clamp(40px, 6vw, 88px);
-  font-size: clamp(32px, 4.4vw, 56px);
+  font-size: clamp(36px, 5vw, 64px);
   font-weight: 400;
   letter-spacing: -0.03em;
   line-height: 1;
