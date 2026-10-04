@@ -47,6 +47,13 @@ const WORKS = [
   desc: "CMP Spain is the name of the Spanish National Pastry Team, which represented Spain at the 2026 European Championship and will soon compete in the World Championship. The brand identity is built around the abbreviation \"ESP\", derived from the country's name, creating a linear graphic form that evokes the traditional layered morphology of a pastry." }];
 
 
+/* Project type line under a project name: the localized category, shown as
+   "Branding · Packaging · Visual Communication". */
+function projectType(tp, id) {
+  const w = WORKS.find((x) => x.id === id);
+  return w ? (tp(w, "category") || "").split(/\s*,\s*/).filter(Boolean).join(" · ") : "";
+}
+
 /* =====================================================================
    HOME — matches the reference image
    ===================================================================== */
@@ -79,6 +86,7 @@ const mq = (q) =>
 typeof window.matchMedia === "function" && window.matchMedia(q).matches;
 
 function HomeShot({ frames, caseId, name, openCase }) {
+  const { tp } = useLang();
   const [active, setActive] = React.useState(0);
   // Frames 2 and 3 only ever show on hover, so a touch device — which can
   // never trigger the rotation — is not made to download them. Resolved after
@@ -140,7 +148,10 @@ function HomeShot({ frames, caseId, name, openCase }) {
           draggable="false" />
         )}
       </div>
-      <h3 className="home-shot-name">{name}</h3>
+      <div className="home-shot-caption">
+        <h3 className="home-shot-name">{name}</h3>
+        <p className="home-shot-type">{projectType(tp, caseId)}</p>
+      </div>
     </article>);
 
 }
@@ -250,7 +261,7 @@ function HomeScreen({ setScreen, openCase }) {
    sections (Visual Identity, Creative Playground, …) can share the same
    chrome and behaviour. */
 function WorkCarousel({ title, items, openCase, comingSoon }) {
-  const { t } = useLang();
+  const { t, tp } = useLang();
   const trackRef = React.useRef(null);
   const draggedRef = React.useRef(false);
 
@@ -334,7 +345,10 @@ function WorkCarousel({ title, items, openCase, comingSoon }) {
               </image-slot>
               </div>
               <div className="work-card-hover">
-                <span className="work-card-hover-name">{w.name}</span>
+                <span className="work-card-hover-text">
+                  <span className="work-card-hover-name">{w.name}</span>
+                  <span className="work-card-hover-type">{projectType(tp, w.id)}</span>
+                </span>
                 <span className="work-card-hover-arrow"><I.ArrowUpRight /></span>
               </div>
             </article>
