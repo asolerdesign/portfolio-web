@@ -1100,6 +1100,43 @@ body.show-grid .grid-overlay { display: block; }
   .about-h { font-size: clamp(40px, 11vw, 75px); }
 }
 
+/* Legal notice + privacy policy: text-only, same type as About */
+.legal-body { max-width: 680px; padding-bottom: 40px; }
+.legal-body p {
+  font-size: 15px;
+  line-height: 1.7;
+  font-weight: 300;
+  color: var(--gray-dark);
+  margin: 0 0 14px;
+  text-wrap: pretty;
+}
+.legal-body a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.legal-section { margin-top: 32px; }
+.legal-h {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--gray-dark);
+  margin: 0 0 8px;
+}
+.legal-data { margin: 24px 0 0; padding: 0; }
+.legal-data > div {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  padding: 10px 0;
+  border-top: 1px solid var(--gray);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--gray-dark);
+}
+.legal-data > div:last-child { border-bottom: 1px solid var(--gray); }
+.legal-data dt { font-weight: 500; }
+.legal-data dd { margin: 0; font-weight: 300; }
+@media (max-width: 720px) {
+  .legal-data > div { grid-template-columns: 1fr; gap: 2px; }
+}
+
 .manifesto-list { list-style: none; padding: 0; margin: 32px 0 0; }
 .manifesto-list li {
   display: grid;
@@ -1437,6 +1474,19 @@ body.show-grid .grid-overlay { display: block; }
   flex-wrap: wrap;
 }
 .footer-bottom span { color: var(--black); }
+.footer-legal { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-legal a {
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+  transition: text-decoration-color 200ms cubic-bezier(0.2, 0, 0.2, 1);
+}
+.footer-legal a:hover { text-decoration-color: transparent; }
 
 /* =========================================================
    B&W placeholder photo SVG colors (no real photo yet)

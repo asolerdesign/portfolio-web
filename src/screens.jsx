@@ -631,4 +631,73 @@ function ContactScreen() {
 
 }
 
-export { WORKS, HomeScreen, WorkScreen, CaseStudy, AboutScreen, ContactScreen };
+/* =====================================================================
+   LEGAL — Legal notice + Privacy policy (text-only pages)
+   ===================================================================== */
+function LegalSection({ h, children }) {
+  return (
+    <div className="legal-section">
+      <h3 className="legal-h">{h}</h3>
+      {children}
+    </div>);
+
+}
+
+function LegalScreen() {
+  const { t } = useLang();
+  const rows = [
+    ["LEGAL.k_owner", "Alberto Soler Alemany"],
+    ["LEGAL.k_nif", "48134874X"],
+    ["LEGAL.k_address", t("LEGAL.v_address")],
+    ["LEGAL.k_email", "work@albertosolerdesign.com"],
+    ["LEGAL.k_web", "albertosolerdesign.com"],
+    ["LEGAL.k_activity", t("LEGAL.v_activity")],
+  ];
+  return (
+    <section className="section section-tight">
+      <div className="container">
+        <div className="legal-body">
+          <h2 className="about-title">{t("LEGAL.title")}</h2>
+          <p>{t("LEGAL.intro")}</p>
+          <dl className="legal-data">
+            {rows.map(([k, v]) =>
+            <div key={k}><dt>{t(k)}</dt><dd>{v}</dd></div>
+            )}
+          </dl>
+          {[1, 2, 3, 4].map((n) =>
+          <LegalSection key={n} h={t(`LEGAL.s${n}_h`)}>
+              <p>{t(`LEGAL.s${n}_p`)}</p>
+            </LegalSection>
+          )}
+        </div>
+      </div>
+    </section>);
+
+}
+
+function PrivacyScreen() {
+  const { t } = useLang();
+  return (
+    <section className="section section-tight">
+      <div className="container">
+        <div className="legal-body">
+          <h2 className="about-title">{t("PRIVACY.title")}</h2>
+          {[1, 2, 3, 4, 5, 6].map((n) =>
+          <LegalSection key={n} h={t(`PRIVACY.s${n}_h`)}>
+              <p>{t(`PRIVACY.s${n}_p`)}</p>
+            </LegalSection>
+          )}
+          <LegalSection h={t("PRIVACY.s7_h")}>
+            <p>
+              {t("PRIVACY.s7_a")}
+              <a href="https://www.aepd.es" target="_blank" rel="noreferrer">www.aepd.es</a>
+              {t("PRIVACY.s7_b")}
+            </p>
+          </LegalSection>
+        </div>
+      </div>
+    </section>);
+
+}
+
+export { WORKS, HomeScreen, WorkScreen, CaseStudy, AboutScreen, ContactScreen, LegalScreen, PrivacyScreen };
