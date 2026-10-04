@@ -1,13 +1,13 @@
 /* =========================================================================
    ALBERTO SOLER — COLORS & TYPE
    Brand and visual identity designer, Barcelona.
-   The system is monochromatic and typographic. Halenoir (Atipo Foundry)
-   is the only typeface. The grid does the heavy lifting.
+   The system is monochromatic and typographic. Mg12 sets the text;
+   Halenoir (Atipo Foundry) is kept for the navbar. The grid does the heavy lifting.
    ========================================================================= */
 
 /* ---------------------------------------------------------------------
-   Halenoir — the brand's only typeface. Geometric grotesque with
-   character: firm, balanced, no ornament. Local OTF files in /fonts.
+   Halenoir — navbar only. Geometric grotesque with character: firm,
+   balanced, no ornament. Local OTF files in /fonts.
    --------------------------------------------------------------------- */
 @font-face { font-family: "Halenoir"; font-weight: 100; font-style: normal; font-display: swap;
   src: url("/fonts/Halenoir-Thin.otf") format("opentype"); }
@@ -50,6 +50,23 @@
 @font-face { font-family: "Halenoir"; font-weight: 900; font-style: italic; font-display: swap;
   src: url("/fonts/Halenoir-BlackItalic.otf") format("opentype"); }
 
+/* ---------------------------------------------------------------------
+   Mg12 — the text face for everything except the navbar (which stays in
+   Halenoir). Regular, Medium and Bold, each with italic.
+   --------------------------------------------------------------------- */
+@font-face { font-family: "Mg12"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("/fonts/Mg12-Regular.otf") format("opentype"); }
+@font-face { font-family: "Mg12"; font-weight: 400; font-style: italic; font-display: swap;
+  src: url("/fonts/Mg12-RegularItalic.otf") format("opentype"); }
+@font-face { font-family: "Mg12"; font-weight: 500; font-style: normal; font-display: swap;
+  src: url("/fonts/Mg12-Medium.otf") format("opentype"); }
+@font-face { font-family: "Mg12"; font-weight: 500; font-style: italic; font-display: swap;
+  src: url("/fonts/Mg12-MediumItalic.otf") format("opentype"); }
+@font-face { font-family: "Mg12"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("/fonts/Mg12-Bold.otf") format("opentype"); }
+@font-face { font-family: "Mg12"; font-weight: 700; font-style: italic; font-display: swap;
+  src: url("/fonts/Mg12-BoldItalic.otf") format("opentype"); }
+
 :root {
   /* ---------- Palette — three values, that's the whole system --------- */
   --white:  #ffffff;
@@ -63,9 +80,11 @@
   --fg:        var(--black);  /* everything else */
 
   /* ---------- Type stacks --------------------------------------------- */
-  --font-sans:    "Halenoir", "Inter", system-ui, -apple-system, "Segoe UI",
+  --font-sans:    "Mg12", "Inter", system-ui, -apple-system, "Segoe UI",
                   Helvetica, Arial, sans-serif;
-  --font-display: "Halenoir", "Inter", system-ui, sans-serif;
+  --font-display: "Mg12", "Inter", system-ui, sans-serif;
+  --font-nav:     "Halenoir", "Inter", system-ui, -apple-system, "Segoe UI",
+                  Helvetica, Arial, sans-serif;
 
   /* ---------- Type scale ---------------------------------------------- */
   --fs-11: 0.6875rem;   /* 11 — micro labels  */
