@@ -471,12 +471,12 @@ function Footer({ setScreen }) {
         </div>
         <div className="footer-bottom">
           <span>{t("FOOTER.copyright")}</span>
-          <nav className="footer-legal">
-            <a onClick={() => setScreen("legal")}>{t("FOOTER.legal")}</a>
-            <a onClick={() => setScreen("privacy")}>{t("FOOTER.privacy")}</a>
-          </nav>
           <span>{t("FOOTER.lang_note")}</span>
         </div>
+        <nav className="footer-legal">
+          <a onClick={() => setScreen("legal")}>{t("FOOTER.legal")}</a>
+          <a onClick={() => setScreen("privacy")}>{t("FOOTER.privacy")}</a>
+        </nav>
       </div>
     </footer>);
 
