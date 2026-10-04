@@ -78,6 +78,7 @@ body.show-grid .grid-overlay { display: block; }
    NAV
    ========================================================= */
 .nav {
+  font-family: var(--font-nav);
   position: sticky; top: 0; z-index: 20;
   /* Near-opaque default for tablet/phone (no wallpaper behind it there). */
   background: rgba(255, 255, 255, 0.92);
