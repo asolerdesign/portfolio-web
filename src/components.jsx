@@ -474,8 +474,6 @@ function Footer({ setScreen }) {
             <a onClick={() => setScreen("legal")}>{t("FOOTER.legal")}</a>
             <a onClick={() => setScreen("privacy")}>{t("FOOTER.privacy")}</a>
           </nav>
-          <span>{t("FOOTER.copyright")}</span>
-          <span>{t("FOOTER.lang_note")}</span>
         </div>
       </div>
     </footer>);
