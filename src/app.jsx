@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { TopNav, Footer } from "./components.jsx";
 import {
   HomeScreen, WorkScreen, CaseStudy, AboutScreen, ContactScreen,
+  LegalScreen, PrivacyScreen,
 } from "./screens.jsx";
 import {
   useTweaks, TweaksPanel, TweakSection,
@@ -94,6 +95,8 @@ function App() {
     case "case":    body = <CaseStudy caseId={caseId} setScreen={goScreen} stepCase={openCase} />; break;
     case "about":   body = <AboutScreen setScreen={goScreen} />; break;
     case "contact": body = <ContactScreen />; break;
+    case "legal":   body = <LegalScreen />; break;
+    case "privacy": body = <PrivacyScreen />; break;
     case "home":
     default:        body = <HomeScreen setScreen={goScreen} openCase={goCase} />;
   }
