@@ -315,14 +315,14 @@ body.show-grid .grid-overlay { display: block; }
   .curtain { display: none; }
 }
 
-/* Project name, below the shot and flush with its left edge — a touch
-   larger than the nav wordmark. */
+/* Project name, below the shot and flush with its left edge — large, regular
+   weight, with generous room before the next shot. */
 .home-shot-name {
-  margin: 12px 0 16px;
-  font-size: calc(var(--wordmark-size) + 4px);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
+  margin: 16px 0 clamp(40px, 6vw, 88px);
+  font-size: clamp(32px, 4.4vw, 56px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
   color: var(--black);
 }
 
