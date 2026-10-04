@@ -67,6 +67,35 @@
 @font-face { font-family: "Mg12"; font-weight: 700; font-style: italic; font-display: swap;
   src: url("/fonts/Mg12-BoldItalic.otf") format("opentype"); }
 
+/* ---------------------------------------------------------------------
+   Besley — project names only (home shots, Work cards, case-study title).
+   Exposed as --font-project.
+   --------------------------------------------------------------------- */
+@font-face { font-family: "Besley"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("/fonts/titulares/Besley-Book.ttf") format("truetype"); }
+@font-face { font-family: "Besley"; font-weight: 400; font-style: italic; font-display: swap;
+  src: url("/fonts/titulares/Besley-BookItalic.ttf") format("truetype"); }
+@font-face { font-family: "Besley"; font-weight: 500; font-style: normal; font-display: swap;
+  src: url("/fonts/titulares/Besley-Medium.ttf") format("truetype"); }
+@font-face { font-family: "Besley"; font-weight: 500; font-style: italic; font-display: swap;
+  src: url("/fonts/titulares/Besley-MediumItalic.ttf") format("truetype"); }
+@font-face { font-family: "Besley"; font-weight: 600; font-style: normal; font-display: swap;
+  src: url("/fonts/titulares/Besley-Semi.ttf") format("truetype"); }
+@font-face { font-family: "Besley"; font-weight: 600; font-style: italic; font-display: swap;
+  src: url("/fonts/titulares/Besley-SemiItalic.ttf") format("truetype"); }
+@font-face { font-family: "Besley"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("/fonts/titulares/Besley-Bold.ttf") format("truetype"); }
+@font-face { font-family: "Besley"; font-weight: 700; font-style: italic; font-display: swap;
+  src: url("/fonts/titulares/Besley-BoldItalic.ttf") format("truetype"); }
+@font-face { font-family: "Besley"; font-weight: 800; font-style: normal; font-display: swap;
+  src: url("/fonts/titulares/Besley-Heavy.ttf") format("truetype"); }
+@font-face { font-family: "Besley"; font-weight: 800; font-style: italic; font-display: swap;
+  src: url("/fonts/titulares/Besley-HeavyItalic.ttf") format("truetype"); }
+@font-face { font-family: "Besley"; font-weight: 900; font-style: normal; font-display: swap;
+  src: url("/fonts/titulares/Besley-Fatface.ttf") format("truetype"); }
+@font-face { font-family: "Besley"; font-weight: 900; font-style: italic; font-display: swap;
+  src: url("/fonts/titulares/Besley-FatfaceItalic.ttf") format("truetype"); }
+
 :root {
   /* ---------- Palette — three values, that's the whole system --------- */
   --white:  #ffffff;
@@ -83,6 +112,7 @@
   --font-sans:    "Mg12", "Inter", system-ui, -apple-system, "Segoe UI",
                   Helvetica, Arial, sans-serif;
   --font-display: "Mg12", "Inter", system-ui, sans-serif;
+  --font-project: "Besley", "Mg12", "Inter", system-ui, sans-serif;
   --font-nav:     "Halenoir", "Inter", system-ui, -apple-system, "Segoe UI",
                   Helvetica, Arial, sans-serif;
 
