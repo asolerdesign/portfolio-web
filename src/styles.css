@@ -318,9 +318,9 @@ body.show-grid .grid-overlay { display: block; }
 /* Project name, below the shot and flush with its left edge — large, regular
    weight, with generous room before the next shot. */
 .home-shot-name {
-  margin: 16px 0 clamp(40px, 6vw, 88px);
+  margin: 24px 0 clamp(40px, 6vw, 88px);
   font-size: clamp(36px, 5vw, 64px);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1;
   color: var(--black);
@@ -1377,7 +1377,7 @@ body.show-grid .grid-overlay { display: block; }
    FOOTER
    ========================================================= */
 .footer {
-  padding: 64px 0 28px;
+  padding: 64px 0 20px;
   background: var(--black);
   color: var(--white);
   margin-top: 0;
@@ -1387,7 +1387,7 @@ body.show-grid .grid-overlay { display: block; }
 .footer h4,
 .footer-bottom span { color: var(--white); }
 .footer-bottom { border-top-color: rgba(255, 255, 255, 0.22); }
-@media (max-width: 720px) { .footer { padding: 40px 0 24px; margin-top: 0; } }
+@media (max-width: 720px) { .footer { padding: 40px 0 20px; margin-top: 0; } }
 
 .footer-grid {
   display: grid;
@@ -1464,16 +1464,17 @@ body.show-grid .grid-overlay { display: block; }
   flex-wrap: wrap;
 }
 .footer-bottom span { color: var(--black); }
-.footer-legal { display: flex; gap: 20px; flex-wrap: wrap; justify-content: flex-start; padding-top: 12px; }
+.footer-legal { display: flex; gap: 20px; flex-wrap: wrap; justify-content: flex-start; }
 .footer-legal a {
   color: var(--white);
+  opacity: 0.5;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
   transition: opacity 200ms cubic-bezier(0.2, 0, 0.2, 1);
 }
-.footer-legal a:hover { opacity: 0.6; }
+.footer-legal a:hover { opacity: 1; }
 
 /* =========================================================
    B&W placeholder photo SVG colors (no real photo yet)
