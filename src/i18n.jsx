@@ -22,7 +22,7 @@ export const STRINGS = {
     "HOME.meta_label": "Disciplines,\nopen for commissions,\n2026.",
     "HOME.disciplines": "Brand Strategy\nVisual Identity\nArt direction\nPackaging\nCreative AI",
     // Work
-    "WORK.section_title": "Visual Identity",
+    "WORK.section_title": "Brand Identity",
     "BC.home": "home",
     "BC.work": "work",
     "BC.about": "about",
@@ -143,7 +143,7 @@ export const STRINGS = {
     "HOME.meta_label": "Disciplinas,\ndisponible para trabajar,\n2026.",
     "HOME.disciplines": "Estrategia de Marca\nIdentidad Visual\nDirección de Arte\nPackaging\nIA Creativa",
     // Work
-    "WORK.section_title": "Identidad Visual",
+    "WORK.section_title": "Identidad de Marca",
     "BC.home": "home",
     "BC.work": "proyectos",
     "BC.about": "sobre mí",
