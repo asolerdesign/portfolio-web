@@ -25,6 +25,8 @@ export const STRINGS = {
     "WORK.section_title": "Visual Identity",
     "BC.home": "home",
     "BC.work": "work",
+    "BC.about": "about",
+    "BC.contact": "contact",
     // Case study labels
     "CASE.back": "All work",
     "CASE.details_head": "Details",
@@ -144,6 +146,8 @@ export const STRINGS = {
     "WORK.section_title": "Identidad Visual",
     "BC.home": "home",
     "BC.work": "proyectos",
+    "BC.about": "sobre mí",
+    "BC.contact": "contacto",
     // Case study labels
     "CASE.back": "Proyectos",
     "CASE.details_head": "Detalles",

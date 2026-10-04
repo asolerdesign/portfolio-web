@@ -570,6 +570,9 @@ function AboutScreen({ setScreen }) {
   return (
     <section className="section section-tight">
       <div className="container">
+        <div className="page-crumbs">
+          <Breadcrumbs path={["home", "about"]} setScreen={setScreen} />
+        </div>
         <div className="about-grid">
           <div className="about-portrait bw-photo-bg">
             <image-slot
@@ -607,11 +610,14 @@ function AboutScreen({ setScreen }) {
 /* =====================================================================
    CONTACT
    ===================================================================== */
-function ContactScreen() {
+function ContactScreen({ setScreen }) {
   const { t } = useLang();
   return (
     <section className="section section-tight">
       <div className="container">
+        <div className="page-crumbs">
+          <Breadcrumbs path={["home", "contact"]} setScreen={setScreen} />
+        </div>
         <div className="contact-grid">
           <div className="contact-side">
             <p>{t("CONTACT.intro")}</p>

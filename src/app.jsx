@@ -94,7 +94,7 @@ function App() {
     case "work":    body = <WorkScreen openCase={goCase} setScreen={goScreen} />; break;
     case "case":    body = <CaseStudy caseId={caseId} setScreen={goScreen} stepCase={openCase} />; break;
     case "about":   body = <AboutScreen setScreen={goScreen} />; break;
-    case "contact": body = <ContactScreen />; break;
+    case "contact": body = <ContactScreen setScreen={goScreen} />; break;
     case "legal":   body = <LegalScreen />; break;
     case "privacy": body = <PrivacyScreen />; break;
     case "home":
