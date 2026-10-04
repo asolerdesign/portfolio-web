@@ -315,29 +315,15 @@ body.show-grid .grid-overlay { display: block; }
   .curtain { display: none; }
 }
 
-/* Hover caption, bottom-left — reuses .work-card-hover-name for identical type. */
-.home-shot-hover {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  color: var(--white);
-  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 100%);
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 200ms cubic-bezier(0.2,0,0.2,1),
-              transform 200ms cubic-bezier(0.2,0,0.2,1);
-  pointer-events: none;
-}
-.home-shot:hover .home-shot-hover,
-.home-shot:focus-visible .home-shot-hover {
-  opacity: 1;
-  transform: translateY(0);
-}
-@media (hover: none) {
-  .home-shot-hover { opacity: 1; transform: none; }
+/* Project name, below the shot and flush with its left edge — a touch
+   larger than the nav wordmark. */
+.home-shot-name {
+  margin: 12px 0 16px;
+  font-size: calc(var(--wordmark-size) + 4px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--black);
 }
 
 /* Full-width CTA to Work — shares the shots' left/right margins. */
@@ -1437,6 +1423,7 @@ body.show-grid .grid-overlay { display: block; }
   margin: 0 0 16px;
 }
 .footer-links-pages a { text-transform: none; letter-spacing: 0; }
+.footer-links.footer-links-pages a { text-decoration: none; }
 .footer-links a.footer-mail { text-transform: none; letter-spacing: 0; }
 .footer-links { display: flex; flex-direction: column; gap: 0; }
 .footer-links a {
@@ -1474,19 +1461,16 @@ body.show-grid .grid-overlay { display: block; }
   flex-wrap: wrap;
 }
 .footer-bottom span { color: var(--black); }
-.footer-legal { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-legal { display: flex; gap: 20px; flex-wrap: wrap; justify-content: flex-start; padding-top: 12px; }
 .footer-legal a {
   color: var(--white);
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-  text-decoration-color: rgba(255, 255, 255, 0.4);
-  transition: text-decoration-color 200ms cubic-bezier(0.2, 0, 0.2, 1);
+  text-decoration: none;
+  transition: opacity 200ms cubic-bezier(0.2, 0, 0.2, 1);
 }
-.footer-legal a:hover { text-decoration-color: transparent; }
+.footer-legal a:hover { opacity: 0.6; }
 
 /* =========================================================
    B&W placeholder photo SVG colors (no real photo yet)

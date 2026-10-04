@@ -140,9 +140,7 @@ function HomeShot({ frames, caseId, name, openCase }) {
           draggable="false" />
         )}
       </div>
-      <div className="home-shot-hover">
-        <span className="work-card-hover-name">{name}</span>
-      </div>
+      <h3 className="home-shot-name">{name}</h3>
     </article>);
 
 }
