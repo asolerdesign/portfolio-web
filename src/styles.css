@@ -945,18 +945,6 @@ body.show-grid .grid-overlay { display: block; }
   border-bottom: 1px solid var(--gray-dark);
   color: var(--gray-dark);
 }
-.case-feature-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--gray-dark);
-}
-
 .case-details-row {
   display: grid;
   grid-template-columns: 110px 1fr;
@@ -997,49 +985,36 @@ body.show-grid .grid-overlay { display: block; }
   .case-media-img { aspect-ratio: 4 / 3; }
 }
 
-/* extra image carousel — drop-zone slots that scroll horizontally */
-.case-gallery-wrap {
-  position: relative;
-  padding-inline: var(--page-pad);
-  margin-top: var(--grid-gap);
-}
-.case-gallery-track {
+/* Case-study image stack — big slots down the page, rows of one or two. */
+.case-gallery {
   display: flex;
+  flex-direction: column;
   gap: var(--grid-gap);
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  cursor: grab;
-  padding-bottom: 4px;
-  user-select: none;
-  -webkit-overflow-scrolling: touch;
+  margin-top: clamp(48px, 6vw, 96px);
 }
-.case-gallery-track.dragging { cursor: grabbing; scroll-behavior: auto; }
-.case-gallery-track::-webkit-scrollbar { display: none; }
-
-.case-gallery-card {
-  flex: 0 0 auto;
-  width: calc((100% - var(--grid-gap) * 2) / 3);
-  scroll-snap-align: start;
+.case-gallery-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--grid-gap);
+}
+.case-gallery-row.is-pair { grid-template-columns: 1fr 1fr; }
+.case-gallery-cell {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 16 / 9;
   background: var(--gray);
   overflow: hidden;
 }
-.case-gallery-card image-slot {
+.case-gallery-row.is-pair .case-gallery-cell { aspect-ratio: 4 / 5; }
+.case-gallery-cell image-slot {
   position: absolute;
   inset: 0;
   width: 100% !important;
   height: 100% !important;
   display: block;
 }
-@media (max-width: 1024px) { .case-gallery-card { width: calc((100% - var(--grid-gap)) / 2); } }
-@media (max-width: 640px)  { .case-gallery-card { width: 78%; } }
-
-.case-gallery-controls {
-  margin-top: 24px;
+@media (max-width: 720px) {
+  .case-gallery-row.is-pair { grid-template-columns: 1fr; }
+  .case-gallery-cell { aspect-ratio: 4 / 3; }
 }
 
 .case-nav {

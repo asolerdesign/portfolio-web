@@ -30,12 +30,10 @@ export const STRINGS = {
     // Case study labels
     "CASE.back": "All work",
     "CASE.details_head": "Details",
-    "CASE.k_category": "Category",
-    "CASE.k_year": "Year",
-    "CASE.k_business": "Business",
+    "CASE.k_services": "Services",
+    "CASE.k_industry": "Industry",
     "CASE.k_type": "Type of Project",
     "CASE.type_default": "Collaboration with Estudi Santamaria.",
-    "CASE.feature_head": "Feature",
     // About
     "ABOUT.title": "As a human, as a designer.",
     "ABOUT.p1": "Hi, I'm Alberto Soler. A designer based in Barcelona in pursuit of greatness. I'm specialized in Brand Strategy, Visual Communication, Packaging and UI Design.",
@@ -120,8 +118,6 @@ export const STRINGS = {
     "A11Y.menu_close": "Close menu",
     "A11Y.prev_proj": "Previous projects",
     "A11Y.next_proj": "Next projects",
-    "A11Y.prev_img": "Previous image",
-    "A11Y.next_img": "Next image",
     "A11Y.breadcrumb": "Directory route",
     "A11Y.remove_file": "Remove {file}",
     // Image drop placeholders
@@ -151,12 +147,10 @@ export const STRINGS = {
     // Case study labels
     "CASE.back": "Proyectos",
     "CASE.details_head": "Detalles",
-    "CASE.k_category": "Categoría",
-    "CASE.k_year": "Año",
-    "CASE.k_business": "Sector",
+    "CASE.k_services": "Servicios",
+    "CASE.k_industry": "Industria",
     "CASE.k_type": "Proyecto",
     "CASE.type_default": "Colaboración con Estudi Santamaria",
-    "CASE.feature_head": "Muestras",
     // About
     "ABOUT.title": "Como humano, como diseñador.",
     "ABOUT.p1": "Hola, soy Alberto Soler, diseñador afincado en Barcelona en busca de la excelencia y mejora constante. Estoy especializado en estrategia de marca, comunicación visual, packaging y diseño de interfaces.",
@@ -241,8 +235,6 @@ export const STRINGS = {
     "A11Y.menu_close": "Cerrar menú",
     "A11Y.prev_proj": "Proyectos anteriores",
     "A11Y.next_proj": "Proyectos siguientes",
-    "A11Y.prev_img": "Imagen anterior",
-    "A11Y.next_img": "Imagen siguiente",
     "A11Y.breadcrumb": "Ruta de navegación",
     "A11Y.remove_file": "Eliminar {file}",
     // Image drop placeholders
