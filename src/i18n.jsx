@@ -118,6 +118,8 @@ export const STRINGS = {
     "A11Y.menu_close": "Close menu",
     "A11Y.prev_proj": "Previous projects",
     "A11Y.next_proj": "Next projects",
+    "A11Y.prev_img": "Previous image",
+    "A11Y.next_img": "Next image",
     "A11Y.breadcrumb": "Directory route",
     "A11Y.remove_file": "Remove {file}",
     // Image drop placeholders
@@ -235,6 +237,8 @@ export const STRINGS = {
     "A11Y.menu_close": "Cerrar menú",
     "A11Y.prev_proj": "Proyectos anteriores",
     "A11Y.next_proj": "Proyectos siguientes",
+    "A11Y.prev_img": "Imagen anterior",
+    "A11Y.next_img": "Imagen siguiente",
     "A11Y.breadcrumb": "Ruta de navegación",
     "A11Y.remove_file": "Eliminar {file}",
     // Image drop placeholders

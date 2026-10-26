@@ -404,45 +404,86 @@ function WorkScreen({ openCase, setScreen }) {
    CASE STUDY — per-project detail page
    ===================================================================== */
 
-/* Case-study image stack: big drop-target slots laid out down the page in
-   rows of one (full width) or two (side by side), alternating 1 · 2 · 1 · 2.
-   `count` is the number of images; slot ids stay `case-<id>-<n>` so images
-   already dropped keep their place. */
-function galleryRows(count) {
-  const rows = [];
-  let n = 1;
-  for (let i = 0; n <= count; i++) {
-    const size = Math.min(i % 2 === 0 ? 1 : 2, count - n + 1);
-    rows.push(Array.from({ length: size }, (_, k) => n + k));
-    n += size;
-  }
-  // Two singles in a row at the end read as a missed pair — join them.
-  const last = rows.length - 1;
-  if (last > 1 && rows[last].length === 1 && rows[last - 1].length === 1) {
-    rows.splice(last - 1, 2, [rows[last - 1][0], rows[last][0]]);
-  }
-  return rows;
-}
-
+/* Drop-target carousel used inside every case study. The number of slots is
+   configurable per-project via `count` so projects with fewer assets can show
+   a shorter carousel. */
 function CaseGallery({ caseId, caseName, count }) {
   const { t } = useLang();
+  const trackRef = React.useRef(null);
+
+  const scrollByCard = (dir) => {
+    const t = trackRef.current;
+    if (!t) return;
+    const card = t.querySelector(".case-gallery-card");
+    const gap = parseFloat(getComputedStyle(t).columnGap || getComputedStyle(t).gap) || 24;
+    const step = card ? card.offsetWidth + gap : t.clientWidth * 0.7;
+    t.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
+
+  // Drag-to-scroll
+  React.useEffect(() => {
+    const t = trackRef.current;
+    if (!t) return;
+    let down = false,startX = 0,startScroll = 0;
+    const onDown = (e) => {
+      // Don't hijack drag on the slot itself — it has its own drop UX
+      if (e.target.closest("image-slot")) return;
+      down = true;
+      startX = e.clientX;startScroll = t.scrollLeft;
+      t.classList.add("dragging");
+    };
+    const onMove = (e) => {
+      if (!down) return;
+      t.scrollLeft = startScroll - (e.clientX - startX);
+    };
+    const onUp = () => {down = false;t.classList.remove("dragging");};
+    t.addEventListener("pointerdown", onDown);
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    return () => {
+      t.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+  }, []);
+
   return (
-    <div className="container case-gallery">
-      {galleryRows(count).map((row) =>
-      <div className={`case-gallery-row${row.length === 2 ? " is-pair" : ""}`} key={row[0]}>
-          {row.map((n) =>
-        <div className="case-gallery-cell" key={n}>
-              <image-slot
-            id={`case-${caseId}-${n}`}
-            placeholder={t("IMG.gallery", { name: caseName, n: String(n).padStart(2, "0") })}
-            shape="rect"
-            fit="cover">
-              </image-slot>
-            </div>
-        )}
+    <>
+      <div className="case-gallery-wrap">
+        <div className="case-gallery-track" ref={trackRef}>
+          {Array.from({ length: count }).map((_, i) => {
+            const n = i + 1;
+            return (
+              <div className="case-gallery-card" key={n}>
+                <image-slot
+                  id={`case-${caseId}-${n}`}
+                  placeholder={t("IMG.gallery", { name: caseName, n: String(n).padStart(2, "0") })}
+                  shape="rect"
+                  fit="cover">
+                </image-slot>
+              </div>);
+
+          })}
         </div>
-      )}
-    </div>);
+      </div>
+
+      <div className="container carousel-controls case-gallery-controls">
+        <button
+          className="carousel-arrow"
+          onClick={() => scrollByCard(-1)}
+          aria-label={t("A11Y.prev_img")}>
+
+          <I.ArrowLeftLg />
+        </button>
+        <button
+          className="carousel-arrow"
+          onClick={() => scrollByCard(1)}
+          aria-label={t("A11Y.next_img")}>
+          
+          <I.ArrowRightLg />
+        </button>
+      </div>
+    </>);
 
 }
 
