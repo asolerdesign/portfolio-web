@@ -1,7 +1,7 @@
 /* =========================================================================
    ALBERTO SOLER — COLORS & TYPE
    Brand and visual identity designer, Barcelona.
-   The system is monochromatic and typographic. Mg12 sets the text;
+   The system is monochromatic and typographic. Manrope sets the text;
    Halenoir (Atipo Foundry) is kept for the navbar. The grid does the heavy lifting.
    ========================================================================= */
 
@@ -51,21 +51,11 @@
   src: url("/fonts/Halenoir-BlackItalic.otf") format("opentype"); }
 
 /* ---------------------------------------------------------------------
-   Mg12 — the text face for everything except the navbar (which stays in
-   Halenoir). Regular, Medium and Bold, each with italic.
+   Manrope — the text face for everything except project names and titles
+   (Besley). One variable file covers every weight from 200 to 800.
    --------------------------------------------------------------------- */
-@font-face { font-family: "Mg12"; font-weight: 400; font-style: normal; font-display: swap;
-  src: url("/fonts/Mg12-Regular.otf") format("opentype"); }
-@font-face { font-family: "Mg12"; font-weight: 400; font-style: italic; font-display: swap;
-  src: url("/fonts/Mg12-RegularItalic.otf") format("opentype"); }
-@font-face { font-family: "Mg12"; font-weight: 500; font-style: normal; font-display: swap;
-  src: url("/fonts/Mg12-Medium.otf") format("opentype"); }
-@font-face { font-family: "Mg12"; font-weight: 500; font-style: italic; font-display: swap;
-  src: url("/fonts/Mg12-MediumItalic.otf") format("opentype"); }
-@font-face { font-family: "Mg12"; font-weight: 700; font-style: normal; font-display: swap;
-  src: url("/fonts/Mg12-Bold.otf") format("opentype"); }
-@font-face { font-family: "Mg12"; font-weight: 700; font-style: italic; font-display: swap;
-  src: url("/fonts/Mg12-BoldItalic.otf") format("opentype"); }
+@font-face { font-family: "Manrope"; font-weight: 200 800; font-style: normal; font-display: swap;
+  src: url("/fonts/textos/Manrope-Variable.woff2") format("woff2"); }
 
 /* ---------------------------------------------------------------------
    Besley — project names only (home shots, Work cards, case-study title).
@@ -109,10 +99,10 @@
   --fg:        var(--black);  /* everything else */
 
   /* ---------- Type stacks --------------------------------------------- */
-  --font-sans:    "Mg12", "Inter", system-ui, -apple-system, "Segoe UI",
+  --font-sans:    "Manrope", "Inter", system-ui, -apple-system, "Segoe UI",
                   Helvetica, Arial, sans-serif;
-  --font-display: "Mg12", "Inter", system-ui, sans-serif;
-  --font-project: "Besley", "Mg12", "Inter", system-ui, sans-serif;
+  --font-display: "Manrope", "Inter", system-ui, sans-serif;
+  --font-project: "Besley", "Manrope", "Inter", system-ui, sans-serif;
   --font-nav:     "Halenoir", "Inter", system-ui, -apple-system, "Segoe UI",
                   Helvetica, Arial, sans-serif;
 
