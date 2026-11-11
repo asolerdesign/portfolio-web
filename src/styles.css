@@ -239,6 +239,28 @@ body.show-grid .grid-overlay { display: block; }
   display: block;
 }
 
+/* Home reel — same footprint as the hero photo it replaces. */
+.home-reel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--hero-aspect);
+  overflow: hidden;
+  background: #d9d9d9;
+}
+@media (max-width: 720px) { .home-reel { aspect-ratio: 4 / 3; } }
+.home-reel-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.home-reel-img.is-contain { object-fit: contain; }
+.home-reel-img.is-bw { filter: grayscale(1) contrast(1.05); }
+.home-reel-img.is-fading { animation: reel-fade 240ms linear both; }
+@keyframes reel-fade { from { opacity: 0; } to { opacity: 1; } }
+
 /* =========================================================
    HOME — project shots + work CTA
    ========================================================= */
