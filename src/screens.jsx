@@ -1,7 +1,7 @@
 /* Screens for the Alberto Soler portfolio. */
 
 import React from "react";
-import { I, HeroPhoto, Breadcrumbs, ContactForm } from "./components.jsx";
+import { I, Breadcrumbs, ContactForm } from "./components.jsx";
 import { useLang } from "./i18n.jsx";
 
 const WORKS = [
@@ -81,6 +81,131 @@ const SHOT_SIZES = "100vw";
 const shotUrl = (n, w) => `/assets/home/${n}-${w}.webp`;
 const shotSrc = (n) => shotUrl(n, SHOT_WIDTHS[n][SHOT_WIDTHS[n].length - 1]);
 const shotSrcSet = (n) => SHOT_WIDTHS[n].map((w) => `${shotUrl(n, w)} ${w}w`).join(", ");
+
+/* ---------------- Home reel ------------------------------------------
+   Replaces the static hero: every project image in a shuffled loop, cut or
+   cross-faded quickly, some frames in B&W. Only the frame on screen and the
+   next one are ever requested, so the page never pulls the whole set at once.
+   Logos on a flat background are shown whole (contain) rather than cropped. */
+const REEL_HOLD_MS = 850;  // time each frame stays on screen (fades: 240ms, in CSS)
+const REEL_BW_RATIO = 0.4; // share of frames shown in black & white
+
+const REEL_FRAMES = [
+  { src: "/assets/reel/can-soler-1.webp" },
+  { src: "/assets/reel/can-soler-2.webp" },
+  { src: "/assets/reel/can-soler-3.webp" },
+  { src: "/assets/reel/can-soler-4.webp" },
+  { src: "/assets/reel/can-soler-5.webp" },
+  { src: "/assets/reel/can-soler-6.webp" },
+  { src: "/assets/reel/can-soler-7.webp" },
+  { src: "/assets/reel/can-soler-8.webp" },
+  { src: "/assets/reel/cheff-1.webp" },
+  { src: "/assets/reel/cheff-2.webp" },
+  { src: "/assets/reel/cheff-3.webp" },
+  { src: "/assets/reel/cmp-spain-1.webp" },
+  { src: "/assets/reel/creative4funnel-1.webp" },
+  { src: "/assets/reel/creative4funnel-2.webp" },
+  { src: "/assets/reel/embudoox-1.webp" },
+  { src: "/assets/reel/embudoox-2.webp", fit: "contain", bg: "#ffffff" },
+  { src: "/assets/reel/iaia-1.webp" },
+  { src: "/assets/reel/iaia-2.webp" },
+  { src: "/assets/reel/iaia-3.webp" },
+  { src: "/assets/reel/iaia-4.webp" },
+  { src: "/assets/reel/main-cheff.webp", fit: "contain", bg: "#ffffff" },
+  { src: "/assets/reel/main-cmp-spain.webp", fit: "contain", bg: "#e7e7e7" },
+  { src: "/assets/reel/main-creative4funnel.webp", fit: "contain", bg: "#ffffff" },
+  { src: "/assets/reel/main-embudoox.webp" },
+  { src: "/assets/reel/main-iaia.webp" },
+  { src: "/assets/reel/main-saint-louis.webp", fit: "contain", bg: "#ffffff" },
+  { src: "/assets/reel/saint-louis-1.webp" },
+  { src: "/assets/reel/saint-louis-2.webp" },
+  { src: "/assets/reel/saint-louis-3.webp" },
+  { src: "/assets/reel/saint-louis-4.webp" },
+  { src: "/assets/reel/saint-louis-5.webp" },
+  { src: "/assets/reel/saint-louis-6.webp" },
+  ...Object.keys(SHOT_WIDTHS).map((n) => ({ src: shotSrc(n), srcSet: shotSrcSet(n) }))
+];
+// Opens on the frame the document head already preloads.
+const REEL_FIRST = REEL_FRAMES.length - 9;
+
+function shuffledReel() {
+  const rest = REEL_FRAMES.filter((_, i) => i !== REEL_FIRST);
+  for (let i = rest.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [rest[i], rest[j]] = [rest[j], rest[i]];
+  }
+  return [REEL_FRAMES[REEL_FIRST], ...rest].map((f, i) => ({
+    ...f,
+    bw: i > 0 && Math.random() < REEL_BW_RATIO,
+    fade: Math.random() < 0.5
+  }));
+}
+
+const preloadFrame = (f) => {
+  const img = new Image();
+  if (f.srcSet) {img.sizes = SHOT_SIZES;img.srcset = f.srcSet;}
+  img.src = f.src;
+  return img.decode ? img.decode().catch(() => {}) : Promise.resolve();
+};
+
+function ReelFrame({ frame, className }) {
+  return (
+    <img
+      className={`home-reel-img${frame.bw ? " is-bw" : ""}${frame.fit === "contain" ? " is-contain" : ""}${className ? " " + className : ""}`}
+      style={frame.bg ? { background: frame.bg } : null}
+      src={frame.src}
+      srcSet={frame.srcSet}
+      sizes={frame.srcSet ? SHOT_SIZES : undefined}
+      alt=""
+      decoding="async"
+      draggable="false" />);
+
+}
+
+function HomeReel() {
+  const [frames] = React.useState(shuffledReel);
+  const [idx, setIdx] = React.useState(0);
+  const [prev, setPrev] = React.useState(null);
+
+  React.useEffect(() => {
+    if (mq("(prefers-reduced-motion: reduce)")) return;
+    let timer = 0;
+    let alive = true;
+    let i = 0;
+    const tick = () => {
+      const n = (i + 1) % frames.length;
+      preloadFrame(frames[n]).then(() => {
+        if (!alive) return;
+        setPrev(frames[n].fade ? i : null);
+        setIdx(n);
+        i = n;
+        schedule();
+      });
+    };
+    const schedule = () => {
+      clearTimeout(timer);
+      if (!document.hidden) timer = setTimeout(tick, REEL_HOLD_MS);
+    };
+    const onVisibility = () => document.hidden ? clearTimeout(timer) : schedule();
+    document.addEventListener("visibilitychange", onVisibility);
+    schedule();
+    return () => {
+      alive = false;
+      clearTimeout(timer);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [frames]);
+
+  return (
+    <div className="home-reel" aria-hidden="true">
+      {prev !== null ? <ReelFrame key={`p${prev}`} frame={frames[prev]} /> : null}
+      <ReelFrame
+        key={idx}
+        frame={frames[idx]}
+        className={prev !== null ? "is-fading" : ""} />
+    </div>);
+
+}
 
 const mq = (q) =>
 typeof window.matchMedia === "function" && window.matchMedia(q).matches;
@@ -220,7 +345,7 @@ function HomeScreen({ setScreen, openCase }) {
   return (
     <>
       <div className="container">
-        <HeroPhoto slotId="home-hero" placeholderLabel={t("IMG.hero")} />
+        <HomeReel />
       </div>
 
       <div className="container home-manifesto">
