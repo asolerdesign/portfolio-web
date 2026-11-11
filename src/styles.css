@@ -242,11 +242,32 @@ body.show-grid .grid-overlay { display: block; }
 /* =========================================================
    HOME — project shots + work CTA
    ========================================================= */
+/* Manifesto line between the hero and the project shots — an editorial
+   statement in Besley, with generous, equal air above and below. */
+.home-manifesto {
+  padding-block: clamp(72px, 9vw, 144px);
+}
+.home-manifesto-text {
+  margin: 0;
+  max-width: 20em;
+  font-family: var(--font-project);
+  font-size: clamp(30px, 3.6vw, 56px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: rgba(17, 17, 17, 0.9);
+  text-wrap: balance;
+}
+@media (max-width: 767px) {
+  .home-manifesto { padding-block: 56px; }
+  .home-manifesto-text { font-size: 26px; line-height: 1.2; }
+}
+
 .home-shots {
   display: flex;
   flex-direction: column;
   gap: 0; /* the caption's own bottom margin sets the shot-to-shot rhythm */
-  margin-top: var(--grid-gap);
+  margin-top: 0; /* the manifesto's bottom padding sets the gap above */
   padding-bottom: clamp(56px, 8vw, 96px);
 }
 
@@ -483,7 +504,7 @@ body.show-grid .grid-overlay { display: block; }
 .section-head .lede {
   font-size: 14px;
   line-height: 1.55;
-  font-weight: 300;
+  font-weight: 400;
   margin-top: 16px;
   max-width: 540px;
 }
@@ -1089,7 +1110,7 @@ body.show-grid .grid-overlay { display: block; }
 .about-body p {
   font-size: 15px;
   line-height: 1.6;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--gray-dark);
   margin: 0 0 14px;
   max-width: 520px;
@@ -1122,7 +1143,7 @@ body.show-grid .grid-overlay { display: block; }
 .legal-body p {
   font-size: 15px;
   line-height: 1.7;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--gray-dark);
   margin: 0 0 14px;
   text-wrap: pretty;
@@ -1149,7 +1170,7 @@ body.show-grid .grid-overlay { display: block; }
 }
 .legal-data > div:last-child { border-bottom: 1px solid var(--gray); }
 .legal-data dt { font-weight: 500; }
-.legal-data dd { margin: 0; font-weight: 300; }
+.legal-data dd { margin: 0; font-weight: 400; }
 @media (max-width: 720px) {
   .legal-data > div { grid-template-columns: 1fr; gap: 2px; }
 }
@@ -1167,7 +1188,7 @@ body.show-grid .grid-overlay { display: block; }
 .manifesto-list li:last-child { border-bottom: 1px solid var(--gray); }
 .manifesto-list .ix { font-weight: 500; font-variant-numeric: tabular-nums; color: var(--gray-dark); }
 .manifesto-list .nm { font-weight: 700; color: var(--gray-dark); }
-.manifesto-list .ds { font-weight: 300; line-height: 1.5; color: var(--gray-dark); }
+.manifesto-list .ds { font-weight: 400; line-height: 1.5; color: var(--gray-dark); }
 @media (max-width: 720px) {
   .manifesto-list li { grid-template-columns: 32px 1fr; row-gap: 4px; }
   .manifesto-list .ds { grid-column: 2; }
@@ -1191,7 +1212,7 @@ body.show-grid .grid-overlay { display: block; }
 .contact-side p {
   font-size: 15px;
   line-height: 1.6;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--gray-dark);
   margin: 0 0 24px;
   max-width: 420px;
@@ -1222,7 +1243,7 @@ body.show-grid .grid-overlay { display: block; }
   margin-bottom: 6px;
 }
 .contact-side .availability .val { font-size: 16px; font-weight: 700; }
-.contact-side .availability .sub { font-size: 12px; margin-top: 4px; font-weight: 300; color: var(--black); }
+.contact-side .availability .sub { font-size: 12px; margin-top: 4px; font-weight: 400; color: var(--black); }
 
 .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 22px; }
 .field label {
@@ -1398,7 +1419,7 @@ body.show-grid .grid-overlay { display: block; }
   border-bottom: 1px solid var(--black);
   font-size: 14px;
   line-height: 1.55;
-  font-weight: 300;
+  font-weight: 400;
 }
 .success b { font-weight: 700; }
 

@@ -16,6 +16,7 @@ export const STRINGS = {
     "NAV.about": "About",
     "NAV.contact": "Contact",
     // Home
+    "HOME.manifesto": "Every idea comes alive when its concept shapes every detail.",
     "HOME.title": "Graphic Design\n& Visual Communication",
     "HOME.based": "Based in Barcelona.",
     "HOME.intro": "Working across visual identity,\nart direction and digital experiences.",
@@ -135,6 +136,7 @@ export const STRINGS = {
     "NAV.about": "Sobre Mí",
     "NAV.contact": "Contacto",
     // Home
+    "HOME.manifesto": "Toda idea cobra vida cuando su concepto impacta en cada detalle.",
     "HOME.title": "Diseño Gráfico\n& Comunicación Visual",
     "HOME.based": "Ubicado en Barcelona.",
     "HOME.intro": "Dedicado a la creación de identidades visuales,\ndirección de arte y experiencias digitales.",

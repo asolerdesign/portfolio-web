@@ -223,6 +223,10 @@ function HomeScreen({ setScreen, openCase }) {
         <HeroPhoto slotId="home-hero" placeholderLabel={t("IMG.hero")} />
       </div>
 
+      <div className="container home-manifesto">
+        <p className="home-manifesto-text">{t("HOME.manifesto")}</p>
+      </div>
+
       <div className="container home-shots" ref={revealRef}>
         <HomeShot
           caseId="can-soler"
