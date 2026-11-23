@@ -384,138 +384,61 @@ function HomeScreen({ setScreen, openCase }) {
 }
 
 /* =====================================================================
-   WORK — horizontal carousel
+   WORK — project grid
    ===================================================================== */
-/* Single horizontal carousel used by WorkScreen. Extracted so multiple
-   sections (Visual Identity, Creative Playground, …) can share the same
-   chrome and behaviour. */
-function WorkCarousel({ title, items, openCase, comingSoon }) {
+/* Every project on one page, in a grid. Each card carries its caption —
+   project name + project type, the same pair the home shots use — above the
+   image rather than below it. */
+function WorkGrid({ items, openCase, comingSoon }) {
   const { t, tp } = useLang();
-  const trackRef = React.useRef(null);
-  const draggedRef = React.useRef(false);
-
-  const scrollByCard = (dir) => {
-    const t = trackRef.current;
-    if (!t) return;
-    const card = t.querySelector(".work-card");
-    const gap = parseFloat(getComputedStyle(t).columnGap || getComputedStyle(t).gap) || 24;
-    const step = card ? card.offsetWidth + gap : t.clientWidth * 0.7;
-    t.scrollBy({ left: dir * step, behavior: "smooth" });
-  };
-
-  /* Mouse gets the grab-and-drag scroll. Touch and pen do NOT: the browser
-     already pans the track natively (with momentum and snap), and writing
-     scrollLeft from JS on top of that is what swallowed a swipe that started
-     on a card. On those pointers we only *watch* the gesture, so a finger
-     that travels is read as a swipe/scroll and a finger that doesn't is
-     still a tap that opens the project. */
-  React.useEffect(() => {
-    const t = trackRef.current;
-    if (!t) return;
-    let down = false,dragScroll = false,startX = 0,startY = 0,startScroll = 0;
-    const onDown = (e) => {
-      down = true;draggedRef.current = false;
-      dragScroll = e.pointerType === "mouse";
-      startX = e.clientX;startY = e.clientY;startScroll = t.scrollLeft;
-      if (dragScroll) t.classList.add("dragging");
-    };
-    const onMove = (e) => {
-      if (!down) return;
-      const dx = e.clientX - startX;
-      // Vertical travel counts too — a page scroll off a card isn't a tap.
-      if (Math.abs(dx) > 4 || Math.abs(e.clientY - startY) > 4) draggedRef.current = true;
-      if (dragScroll) t.scrollLeft = startScroll - dx;
-    };
-    const onUp = () => {down = false;dragScroll = false;t.classList.remove("dragging");};
-    // The browser fires pointercancel the moment it claims the gesture as a
-    // native scroll: that is a swipe by definition, so suppress the click.
-    const onCancel = () => {draggedRef.current = true;onUp();};
-    t.addEventListener("pointerdown", onDown);
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
-    window.addEventListener("pointercancel", onCancel);
-    return () => {
-      t.removeEventListener("pointerdown", onDown);
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerup", onUp);
-      window.removeEventListener("pointercancel", onCancel);
-    };
-  }, []);
-
-  const onCardClick = (id) => (e) => {
-    if (draggedRef.current) {e.preventDefault();return;}
-    openCase(id);
-  };
 
   return (
-    <div className="work-carousel-section">
-      <div className="container work-carousel-title-row">
-        <h2 className="work-section-title" style={{ fontSize: "35px", letterSpacing: "-0.5px" }}>{title}</h2>
-      </div>
+    <div className="work-grid-section container">
+      <div className="work-grid">
+        {items.map((w) =>
+        <article
+          className="work-card"
+          key={w.id}
+          onClick={() => openCase(w.id)}
+          role="link"
+          tabIndex="0"
+          aria-label={w.name}
+          onKeyDown={(e) => {if (e.key === "Enter") openCase(w.id);}}>
 
-      <div className="work-carousel">
-        <div className="work-track" ref={trackRef}>
-          {items.map((w) =>
-          <article
-            className="work-card"
-            key={w.id}
-            onClick={onCardClick(w.id)}
-            role="link"
-            tabIndex="0"
-            onKeyDown={(e) => {if (e.key === "Enter") openCase(w.id);}}>
-            
-              <div className="work-card-image">
-                <image-slot
-                id={`work-${w.id}`}
-                src={w.image || ""}
-                placeholder={t("IMG.work_card", { name: w.name })}
-                shape="rect"
-                fit="cover">
-              </image-slot>
-              </div>
-              <div className="work-card-hover">
-                <span className="work-card-hover-text">
-                  <span className="work-card-hover-name">{w.name}</span>
-                  <span className="work-card-hover-type">{projectType(tp, w.id)}</span>
-                </span>
-                <span className="work-card-hover-arrow"><I.ArrowUpRight /></span>
-              </div>
-            </article>
-          )}
+            <div className="work-card-caption">
+              <h3 className="work-card-name">{w.name}</h3>
+              <p className="work-card-type">{projectType(tp, w.id)}</p>
+            </div>
+            <div className="work-card-image">
+              <image-slot
+              id={`work-${w.id}`}
+              src={w.image || ""}
+              placeholder={t("IMG.work_card", { name: w.name })}
+              shape="rect"
+              fit="cover">
+            </image-slot>
+            </div>
+          </article>
+        )}
 
-          {/* Placeholder for an unannounced project: no link, no case study. */}
-          {comingSoon ?
-          <article className="work-card work-card-soon" aria-label="Coming soon">
-              <div className="work-card-image">
-                <span className="work-card-soon-label">Coming soon</span>
-              </div>
-            </article> :
-          null}
-        </div>
-      </div>
-
-      <div className="container carousel-controls">
-        <button
-          className="carousel-arrow"
-          onClick={() => scrollByCard(-1)}
-          aria-label={t("A11Y.prev_proj")}>
-
-          <I.ArrowLeftLg />
-        </button>
-        <button
-          className="carousel-arrow"
-          onClick={() => scrollByCard(1)}
-          aria-label={t("A11Y.next_proj")}>
-          
-          <I.ArrowRightLg />
-        </button>
+        {/* Placeholder for an unannounced project: no link, no case study. */}
+        {comingSoon ?
+        <article className="work-card work-card-soon" aria-label="Coming soon">
+            <div className="work-card-caption" aria-hidden="true">
+              <h3 className="work-card-name">&nbsp;</h3>
+              <p className="work-card-type">&nbsp;</p>
+            </div>
+            <div className="work-card-image">
+              <span className="work-card-soon-label">Coming soon</span>
+            </div>
+          </article> :
+        null}
       </div>
     </div>);
 
 }
 
 function WorkScreen({ openCase, setScreen }) {
-  const { t } = useLang();
   const identityProjects = WORKS.filter((w) => (w.section || "identity") === "identity");
 
   return (
@@ -524,7 +447,7 @@ function WorkScreen({ openCase, setScreen }) {
         <Breadcrumbs path={["home", "work"]} setScreen={setScreen} />
       </div>
 
-      <WorkCarousel title={t("WORK.section_title")} items={identityProjects} openCase={openCase} comingSoon />
+      <WorkGrid items={identityProjects} openCase={openCase} comingSoon />
     </section>);
 
 }
