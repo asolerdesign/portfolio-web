@@ -389,13 +389,11 @@ function HomeScreen({ setScreen, openCase }) {
 /* Every project on one page, in a grid. Each card carries its caption —
    project name + project type, the same pair the home shots use — above the
    image rather than below it. */
-function WorkGrid({ title, items, openCase, comingSoon }) {
+function WorkGrid({ items, openCase, comingSoon }) {
   const { t, tp } = useLang();
 
   return (
     <div className="work-grid-section container">
-      <h2 className="work-section-title work-grid-title">{title}</h2>
-
       <div className="work-grid">
         {items.map((w) =>
         <article
@@ -441,7 +439,6 @@ function WorkGrid({ title, items, openCase, comingSoon }) {
 }
 
 function WorkScreen({ openCase, setScreen }) {
-  const { t } = useLang();
   const identityProjects = WORKS.filter((w) => (w.section || "identity") === "identity");
 
   return (
@@ -450,7 +447,7 @@ function WorkScreen({ openCase, setScreen }) {
         <Breadcrumbs path={["home", "work"]} setScreen={setScreen} />
       </div>
 
-      <WorkGrid title={t("WORK.section_title")} items={identityProjects} openCase={openCase} comingSoon />
+      <WorkGrid items={identityProjects} openCase={openCase} comingSoon />
     </section>);
 
 }

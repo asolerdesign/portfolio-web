@@ -674,7 +674,7 @@ body.show-grid .grid-overlay { display: block; }
 @media (max-width: 720px) { .work-section { padding: 16px 0 24px; } }
 
 .work-section-head {
-  margin-bottom: 16px;
+  margin-bottom: clamp(28px, 3vw, 48px);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -724,11 +724,6 @@ body.show-grid .grid-overlay { display: block; }
 
 /* Stacked sections on the Work page (Visual Identity, Creative Playground, …) */
 .work-grid-section + .work-grid-section { margin-top: clamp(64px, 7vw, 112px); }
-.work-grid-title {
-  font-size: 35px;
-  letter-spacing: -0.5px;
-  margin: 0 0 clamp(28px, 3vw, 48px);
-}
 
 /* 4 columns on the 12-col grid (3 cols each), 2 on tablet, 1 on phone.
    Captions sit above the image, so rows get a generous gap to keep each
