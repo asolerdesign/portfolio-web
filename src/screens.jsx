@@ -125,30 +125,99 @@ const REEL_FRAMES = [
   { src: "/assets/reel/saint-louis-6.webp" },
   ...Object.keys(SHOT_WIDTHS).map((n) => ({ src: shotSrc(n), srcSet: shotSrcSet(n) }))
 ];
-// Opens on the frame the document head already preloads.
-const REEL_FIRST = REEL_FRAMES.length - 9;
 
-function shuffledReel() {
-  const rest = REEL_FRAMES.filter((_, i) => i !== REEL_FIRST);
-  for (let i = rest.length - 1; i > 0; i--) {
+/* Motion pieces. They open the reel (ONAMI, then IAIA), always in colour and
+   always played to the end, before the shuffled photos take over. They are
+   served exactly as exported; the poster is their first frame, so nothing
+   jumps when playback starts. */
+const VIDEO_ONAMI = {
+  video: "/assets/video/onami-values-wordmark-desktop.mp4",
+  poster: "/assets/video/onami-values-wordmark-desktop-poster.webp"
+};
+const VIDEO_IAIA = {
+  video: "/assets/video/iaia-desde-dentro-desktop.mp4",
+  poster: "/assets/video/iaia-desde-dentro-desktop-poster.webp"
+};
+const REEL_VIDEOS = [VIDEO_ONAMI, VIDEO_IAIA];
+
+/* Reduced motion drops the fast photo cuts but keeps the two videos, which
+   simply alternate. */
+function buildReel() {
+  if (mq("(prefers-reduced-motion: reduce)")) return REEL_VIDEOS.map((f) => ({ ...f }));
+  const photos = REEL_FRAMES.slice();
+  for (let i = photos.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [rest[i], rest[j]] = [rest[j], rest[i]];
+    [photos[i], photos[j]] = [photos[j], photos[i]];
   }
-  return [REEL_FRAMES[REEL_FIRST], ...rest].map((f, i) => ({
-    ...f,
-    bw: i > 0 && Math.random() < REEL_BW_RATIO,
-    fade: Math.random() < 0.5
-  }));
+  return [
+    ...REEL_VIDEOS.map((f) => ({ ...f, bw: false, fade: false })),
+    ...photos.map((f) => ({
+      ...f,
+      bw: Math.random() < REEL_BW_RATIO,
+      fade: Math.random() < 0.5
+    }))
+  ];
 }
 
+const preloadVideo = (src) => new Promise((resolve) => {
+  const v = document.createElement("video");
+  const done = () => {clearTimeout(t);resolve();};
+  const t = setTimeout(done, 4000); // never hold the reel hostage to a slow network
+  v.muted = true;
+  v.preload = "auto";
+  v.addEventListener("canplaythrough", done, { once: true });
+  v.addEventListener("error", done, { once: true });
+  v.src = src;
+});
+
 const preloadFrame = (f) => {
+  if (f.video) return preloadVideo(f.video);
   const img = new Image();
   if (f.srcSet) {img.sizes = SHOT_SIZES;img.srcset = f.srcSet;}
   img.src = f.src;
   return img.decode ? img.decode().catch(() => {}) : Promise.resolve();
 };
 
-function ReelFrame({ frame, className }) {
+/* Starts playback from script (muted first) rather than trusting autoplay
+   alone; if the browser refuses — iOS Low Power Mode, for one — onBlocked
+   runs so the caller can move on instead of sitting on a still poster. */
+function usePlay(ref, onBlocked) {
+  React.useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    let live = true;
+    v.muted = true;
+    const p = v.play();
+    if (p && p.catch) {
+      p.catch((err) => {
+        if (live && err && err.name !== "AbortError" && onBlocked) onBlocked();
+      });
+    }
+    return () => {live = false;};
+  }, []);
+}
+
+function ReelVideo({ frame, className, onEnded }) {
+  const ref = React.useRef(null);
+  usePlay(ref, () => setTimeout(() => onEnded && onEnded(), REEL_HOLD_MS));
+  return (
+    <video
+      ref={ref}
+      className={`home-reel-img${className ? " " + className : ""}`}
+      src={frame.video}
+      poster={frame.poster}
+      muted
+      playsInline
+      autoPlay
+      preload="auto"
+      disablePictureInPicture
+      onEnded={onEnded}
+      onError={onEnded} />);
+
+}
+
+function ReelFrame({ frame, className, onEnded }) {
+  if (frame.video) return <ReelVideo frame={frame} className={className} onEnded={onEnded} />;
   return (
     <img
       className={`home-reel-img${frame.bw ? " is-bw" : ""}${frame.fit === "contain" ? " is-contain" : ""}${className ? " " + className : ""}`}
@@ -163,52 +232,93 @@ function ReelFrame({ frame, className }) {
 }
 
 function HomeReel() {
-  const [frames] = React.useState(shuffledReel);
-  const [idx, setIdx] = React.useState(0);
-  const [prev, setPrev] = React.useState(null);
+  const [frames] = React.useState(buildReel);
+  // `step` only ever grows and keys each frame element, so the frame fading
+  // out keeps its own element: an ended video holds its last frame instead of
+  // being remounted back at its first.
+  const [shot, setShot] = React.useState({ step: 0, fadeFrom: null });
+  const onEnded = React.useRef(() => {});
 
   React.useEffect(() => {
-    if (mq("(prefers-reduced-motion: reduce)")) return;
+    if (frames.length < 2) return;
+    const at = (s) => frames[s % frames.length];
     let timer = 0;
     let alive = true;
-    let i = 0;
-    const tick = () => {
-      const n = (i + 1) % frames.length;
-      preloadFrame(frames[n]).then(() => {
-        if (!alive) return;
-        setPrev(frames[n].fade ? i : null);
-        setIdx(n);
-        i = n;
-        schedule();
-      });
-    };
-    const schedule = () => {
+    let step = 0;
+    let advancing = false;
+    let nextReady = preloadFrame(at(1));
+
+    // Photos hold for REEL_HOLD_MS; videos hand over when they end.
+    const hold = () => {
       clearTimeout(timer);
-      if (!document.hidden) timer = setTimeout(tick, REEL_HOLD_MS);
+      if (!at(step).video && !document.hidden) timer = setTimeout(advance, REEL_HOLD_MS);
     };
-    const onVisibility = () => document.hidden ? clearTimeout(timer) : schedule();
+    function advance() {
+      if (advancing) return;
+      advancing = true;
+      clearTimeout(timer);
+      const from = step;
+      nextReady.then(() => {
+        if (!alive) return;
+        advancing = false;
+        step = from + 1;
+        setShot({ step, fadeFrom: at(step).fade ? from : null });
+        nextReady = preloadFrame(at(step + 1));
+        hold();
+      });
+    }
+    onEnded.current = advance;
+
+    const onVisibility = () => document.hidden ? clearTimeout(timer) : hold();
     document.addEventListener("visibilitychange", onVisibility);
-    schedule();
+    hold();
     return () => {
       alive = false;
       clearTimeout(timer);
+      onEnded.current = () => {};
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, [frames]);
 
+  const { step, fadeFrom } = shot;
   return (
     <div className="home-reel" aria-hidden="true">
-      {prev !== null ? <ReelFrame key={`p${prev}`} frame={frames[prev]} /> : null}
+      {fadeFrom !== null ?
+      <ReelFrame key={fadeFrom} frame={frames[fadeFrom % frames.length]} /> :
+      null}
       <ReelFrame
-        key={idx}
-        frame={frames[idx]}
-        className={prev !== null ? "is-fading" : ""} />
+        key={step}
+        frame={frames[step % frames.length]}
+        className={fadeFrom !== null ? "is-fading" : ""}
+        onEnded={() => onEnded.current()} />
     </div>);
 
 }
 
 const mq = (q) =>
 typeof window.matchMedia === "function" && window.matchMedia(q).matches;
+
+/* A video standing in as a shot's first frame: loops for as long as it is
+   on the page, hover or not (the stills cross-fade over it). */
+function ShotVideo({ frame, label, className }) {
+  const ref = React.useRef(null);
+  usePlay(ref);
+  return (
+    <video
+      ref={ref}
+      className={className}
+      src={frame.video}
+      poster={frame.poster}
+      muted
+      loop
+      playsInline
+      autoPlay
+      preload="auto"
+      disablePictureInPicture
+      aria-label={label}
+      aria-hidden={label ? undefined : true} />);
+
+}
 
 function HomeShot({ frames, caseId, name, openCase }) {
   const { tp } = useLang();
@@ -257,7 +367,13 @@ function HomeShot({ frames, caseId, name, openCase }) {
       onKeyDown={(e) => {if (e.key === "Enter" && openCase) openCase(caseId);}}>
 
       <div className="home-shot-media">
-        {shown.map((n, i) =>
+        {shown.map((n, i) => n.video ?
+        <ShotVideo
+          key={n.video}
+          frame={n}
+          label={i === 0 ? name : undefined}
+          className={`home-shot-img${i === active ? " is-on" : ""}`} /> :
+
         <img
           key={n}
           src={shotSrc(n)}
@@ -363,7 +479,7 @@ function HomeScreen({ setScreen, openCase }) {
           caseId="iaia"
           name="IAIA"
           openCase={openCase}
-          frames={["home-iaia-1", "home-iaia-2", "home-iaia-3"]} />
+          frames={[VIDEO_IAIA, "home-iaia-2", "home-iaia-3"]} />
 
         <HomeShot
           caseId="saint-louis"

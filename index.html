@@ -10,15 +10,16 @@
   <link rel="icon" type="image/png" href="/icon-512.png" sizes="512x512"/>
   <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
 
-  <!-- Home is always the entry screen, so its three visible photographs are
-       fetched while the HTML parses instead of waiting for React to mount.
-       The srcset/sizes below must stay identical to the ones the <img> tags
-       render (src/screens.jsx) or the browser downloads the image twice. -->
-  <link rel="preload" as="image" fetchpriority="high" href="/assets/home/home-can-soler-1-1536.webp"
+  <!-- Home is always the entry screen, so the first frame of each visible
+       slot is fetched while the HTML parses instead of waiting for React to
+       mount: the posters of the two videos (the reel opens on ONAMI; IAIA is
+       the IAIA shot) and the two photographs. The srcset/sizes below must stay
+       identical to the ones the <img> tags render (src/screens.jsx) or the
+       browser downloads the image twice. -->
+  <link rel="preload" as="image" fetchpriority="high" href="/assets/video/onami-values-wordmark-desktop-poster.webp"/>
+  <link rel="preload" as="image" href="/assets/video/iaia-desde-dentro-desktop-poster.webp"/>
+  <link rel="preload" as="image" href="/assets/home/home-can-soler-1-1536.webp"
         imagesrcset="/assets/home/home-can-soler-1-480.webp 480w, /assets/home/home-can-soler-1-768.webp 768w, /assets/home/home-can-soler-1-1152.webp 1152w, /assets/home/home-can-soler-1-1536.webp 1536w"
-        imagesizes="100vw"/>
-  <link rel="preload" as="image" href="/assets/home/home-iaia-1-1536.webp"
-        imagesrcset="/assets/home/home-iaia-1-480.webp 480w, /assets/home/home-iaia-1-768.webp 768w, /assets/home/home-iaia-1-1152.webp 1152w, /assets/home/home-iaia-1-1536.webp 1536w"
         imagesizes="100vw"/>
   <link rel="preload" as="image" href="/assets/home/home-saint-louis-1-1536.webp"
         imagesrcset="/assets/home/home-saint-louis-1-480.webp 480w, /assets/home/home-saint-louis-1-768.webp 768w, /assets/home/home-saint-louis-1-1152.webp 1152w, /assets/home/home-saint-louis-1-1536.webp 1536w"
